@@ -1,0 +1,223 @@
+<!--HEAD-->
+<title>CHF 90 Cassette · Sony 80th 3D Collection by Hikaru</title>
+<meta name="author" content="Hikaru Digital Marketing">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* single-theme by request: white ground in every OS theme */
+  :root {
+    --bg: #FFFFFF; --panel: #FFFFFF; --panel-edge: #DDD5C8; --ink: #211714; --muted: #6E6158;
+    --accent: #E5642A; --accent-ink: #FFFFFF; --hover: #F3EEE6; --focus: #E5642A; --tag: #FFFFFF; --tag-edge: #211714;
+  }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+  .app { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr; }
+  /* header as in the 8-product site: Sony | title ......... back | created by hikaru */
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; box-sizing: border-box; padding: 0 24px; border-bottom: 1px solid var(--panel-edge); background: var(--bg); }
+  .brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+  .sony { display: block; height: 19px; width: auto; flex: 0 0 auto; fill: #000000; }
+  .rule { width: 1px; height: 28px; background: var(--panel-edge); flex: 0 0 auto; }
+  .titles { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .eyebrow { font: 600 10.5px/1 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .model { font: 600 16px/1.1 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; color: var(--ink); white-space: nowrap; }
+  .meta { color: var(--muted); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .bar-right { display: flex; align-items: center; gap: 20px; flex: 0 0 auto; }
+  .back { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border: 1px solid var(--panel-edge); border-radius: 6px; color: var(--ink); font-size: 13.5px; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background 120ms; }
+  .back:hover { background: var(--hover); }
+  .back svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .credit { display: flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; white-space: nowrap; }
+  .credit-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hikaru { display: block; width: 77px; height: 16px; background: var(--ink); -webkit-mask: url(__HIKARU_PNG__) center / contain no-repeat; mask: url(__HIKARU_PNG__) center / contain no-repeat; transition: background 120ms; }
+  .credit:hover .hikaru { background: var(--accent); }
+  .credit:focus-visible, .back:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+  .readout { font: 500 12px/1 "IBM Plex Mono", "Consolas", monospace; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; text-transform: uppercase; }
+  .stage { position: relative; min-height: 0; }
+  canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; }
+  canvas.pixel { image-rendering: pixelated; }
+  .hint { position: absolute; left: 20px; bottom: 16px; color: var(--muted); font-size: 12px; letter-spacing: 0.02em; pointer-events: none; }
+  .dock { position: absolute; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+  .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 10px; background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 6px; box-shadow: 0 6px 20px rgba(33, 23, 20, 0.10); }
+  .label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-right: 4px; min-width: 38px; }
+  button { appearance: none; border: 1px solid var(--panel-edge); background: transparent; color: var(--ink); font: inherit; font-weight: 500; padding: 6px 11px; border-radius: 4px; cursor: pointer; transition: background 120ms, border-color 120ms; }
+  button:hover { background: var(--hover); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  button.active, button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  .slider { display: inline-flex; align-items: center; gap: 8px; padding: 0 4px; }
+  .slider span { font-size: 13px; font-weight: 500; }
+  input[type="range"] { width: 150px; accent-color: var(--accent); }
+  .tags { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .tag { position: absolute; transform: translate(-50%, -100%); padding: 3px 7px 3px 7px; margin-top: -10px; background: var(--tag); color: var(--ink); border: 1px solid var(--tag-edge); border-radius: 3px; font-size: 12px; font-weight: 500; white-space: nowrap; letter-spacing: 0.01em; }
+  .tag::after { content: ""; position: absolute; left: 50%; bottom: -9px; width: 1px; height: 8px; background: var(--tag-edge); }
+  .tag.hidden { display: none; }
+  @media (max-width: 640px) {
+    .meta, .hint, .readout, .credit-label, .eyebrow, .back span { display: none; }
+    .bar { height: 56px; padding: 0 12px; gap: 12px; }
+    .brand, .bar-right { gap: 10px; }
+    .sony { height: 14px; }
+    .back { width: 34px; height: 34px; padding: 0; justify-content: center; }
+    .hikaru { width: 58px; height: 12px; }
+    .dock { left: 12px; right: 12px; bottom: 12px; align-items: stretch; }
+    .group { justify-content: center; }
+  }
+  @media (prefers-reduced-motion: reduce) { button { transition: none; } }
+</style>
+<!--BODY-->
+<div class="app">
+  <header class="bar">
+    <div class="brand">
+      <svg class="sony" viewBox="0 0 1280 225.28" role="img" aria-label="Sony"><path d="__SONY_PATH__"/></svg>
+      <span class="rule" aria-hidden="true"></span>
+      <div class="titles"><span class="eyebrow">80th Anniversary · 3D Collection</span><span class="model">Tape CHF 90</span></div>
+      <span class="meta">100.4 × 63.8 × 12 mm · illustration label on the real shell, edges and the inside</span>
+    </div>
+    <div class="bar-right">
+      <div class="readout" id="readout" aria-live="off">az 0° · el 0°</div>
+      <a class="back" href="./sony80_viewer.html" title="Back to the 8-product collection"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>All 8 products</span></a>
+      <span class="rule" aria-hidden="true"></span>
+      <a class="credit" href="https://www.hikaru.com.tw/" target="_blank" rel="noopener" aria-label="Created by Hikaru Digital Marketing"><span class="credit-label">Created by</span><span class="hikaru"></span></a>
+    </div>
+  </header>
+  <div class="stage" id="stage">
+    <canvas id="c" tabindex="0" aria-label="Interactive 3D cassette"></canvas>
+    <div class="tags" id="tags" aria-hidden="true"></div>
+    <div class="hint">Drag to orbit · Scroll to zoom · Right‑drag to pan</div>
+    <nav class="dock" aria-label="Viewer controls">
+      <div class="group" role="group" aria-label="Preset views"><span class="label">View</span>
+        <button data-view="threeq" class="active">3/4</button>
+        <button data-view="a">Side A</button>
+        <button data-view="b">Side B</button>
+        <button data-view="top">Top edge</button>
+        <button data-view="bottom">Bottom edge</button>
+        <button data-view="inside">Inside</button>
+      </div>
+      <div class="group" role="group" aria-label="Inside the shell"><span class="label">Inside</span>
+        <label class="slider"><span>Open shell</span><input type="range" id="explode" min="0" max="100" value="0" aria-label="Open the shell"></label>
+        <button data-toggle="ghost" aria-pressed="false">See‑through</button>
+        <button data-toggle="names" aria-pressed="false">Part names</button>
+      </div>
+      <div class="group" role="group" aria-label="Display options"><span class="label">Show</span>
+        <button data-toggle="rotate" aria-pressed="false">Auto‑rotate</button>
+        <button data-toggle="smoke" aria-pressed="false">Smoked shell</button>
+        <button data-toggle="edges" aria-pressed="true">Outlines</button>
+        <button data-toggle="pixel" aria-pressed="false">Pixel look</button>
+        <button data-toggle="reels" aria-pressed="false">Spin reels</button>
+      </div>
+    </nav>
+  </div>
+</div>
+<script>
+/*__BUNDLE__*/
+</script>
+<script>
+(function () {
+  "use strict";
+  var LABEL_A = "__LABEL_A__", LABEL_B = "__LABEL_B__";
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var canvas = document.getElementById("c"), stage = document.getElementById("stage"), readout = document.getElementById("readout"), tagsEl = document.getElementById("tags");
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setClearColor(0x000000, 0);
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(30, 1, 0.05, 50);
+  scene.add(camera);
+  scene.add(new THREE.AmbientLight(0xffffff, 1.6));
+  var key = new THREE.DirectionalLight(0xffffff, 1.9); key.position.set(1.2, 2.2, 2.6); camera.add(key);   // light rides with the camera
+
+  var loader = new THREE.TextureLoader();
+  function tex(uri) { var t = loader.load(uri); t.colorSpace = THREE.SRGBColorSpace; t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearMipmapLinearFilter; return t; }
+  var labelA = tex(LABEL_A), labelB = tex(LABEL_B);
+  var model = buildCassette(THREE, { labelA: labelA, labelB: labelB, edges: true });
+  scene.add(model);
+  var lines = []; model.traverse(function (o) { if (o.isLine || o.isLineSegments) lines.push(o); });
+  var reels = model.userData.reels || [], parts = model.userData.parts || [];
+
+  // part-name callouts (DOM tags projected from 3D anchor points)
+  var tags = parts.map(function (p) { var el = document.createElement("div"); el.className = "tag hidden"; el.textContent = p.name; tagsEl.appendChild(el); return { el: el, part: p, v: new THREE.Vector3() }; });
+
+  var controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = !reduced; controls.dampingFactor = 0.08;
+  controls.minDistance = 1.2; controls.maxDistance = 9; controls.autoRotateSpeed = 1.4;
+
+  // preset views: [azimuth deg, elevation deg, distance]; "inside" also opens the shell and toggles off on a second click
+  var VIEWS = { threeq: [-30, 18, 3.4], a: [0, 0, 3.4], b: [155, 18, 3.4], top: [-15, 72, 3.4], bottom: [-15, -72, 3.4], inside: [-62, 34, 5.4] };
+  var explodeTween = null, explodeVal = 0, insideOn = false;
+  var explodeInput = document.getElementById("explode");
+  var viewButtons = Array.prototype.slice.call(document.querySelectorAll("[data-view]"));
+  function sph(az, el, d) { var a = az * Math.PI / 180, e = el * Math.PI / 180; return new THREE.Vector3(d * Math.cos(e) * Math.sin(a), d * Math.sin(e), d * Math.cos(e) * Math.cos(a)); }
+  function setExplode(t) { explodeVal = t; model.userData.setExplode(t); explodeInput.value = String(Math.round(t * 100)); }
+  function animateExplode(to) { if (reduced) { explodeTween = null; setExplode(to); } else explodeTween = { from: explodeVal, to: to, t0: performance.now(), dur: 500 }; }
+  function markView(name) { viewButtons.forEach(function (x) { x.classList.toggle("active", x.dataset.view === name); }); }
+  function goTo(name) {
+    if (name === "inside" && insideOn) name = "threeq";               // second click on Inside closes the shell again
+    var v = VIEWS[name], damp = controls.enableDamping;
+    controls.enableDamping = false; controls.update(); controls.enableDamping = damp;   // drop leftover drag momentum
+    controls.target.set(0, 0, 0); camera.position.copy(sph(v[0], v[1], v[2])); controls.update();   // jump straight there, no fly-through
+    if (name === "inside") { insideOn = true; animateExplode(1); }
+    else if (insideOn) { insideOn = false; animateExplode(0); }      // leaving Inside closes what it opened; a slider setting is kept
+    markView(name);
+  }
+  viewButtons.forEach(function (b) { b.addEventListener("click", function () { goTo(b.dataset.view); }); });
+  explodeInput.addEventListener("input", function () {
+    explodeTween = null; setExplode(explodeInput.valueAsNumber / 100);
+    if (insideOn) { insideOn = false; viewButtons.forEach(function (x) { if (x.dataset.view === "inside") x.classList.remove("active"); }); }
+  });
+
+  var state = { rotate: false, edges: true, pixel: false, reels: false, ghost: false, names: false, smoke: false };
+  document.querySelectorAll("[data-toggle]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var k = b.dataset.toggle; state[k] = !state[k]; b.setAttribute("aria-pressed", String(state[k]));
+      if (k === "rotate") controls.autoRotate = state.rotate;
+      if (k === "edges") lines.forEach(function (l) { l.visible = state.edges; });
+      if (k === "ghost") model.userData.setGhost(state.ghost);
+      if (k === "smoke") model.userData.setShell(state.smoke ? "smoke" : "tan");
+      if (k === "names") tagsEl.style.display = state.names ? "" : "none";
+      if (k === "pixel") { canvas.classList.toggle("pixel", state.pixel); resize(); [labelA, labelB].forEach(function (t) { t.magFilter = t.minFilter = state.pixel ? THREE.NearestFilter : THREE.LinearFilter; if (!state.pixel) t.minFilter = THREE.LinearMipmapLinearFilter; t.needsUpdate = true; }); }
+    });
+  });
+  tagsEl.style.display = "none";
+  controls.addEventListener("start", function () { markView(insideOn ? "inside" : null); });   // Inside stays lit while the shell is open
+
+  function resize() {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setPixelRatio(state.pixel ? 0.25 : Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(stage); else window.addEventListener("resize", resize);
+  resize();
+  camera.position.copy(sph(VIEWS.threeq[0], VIEWS.threeq[1], VIEWS.threeq[2]));
+
+  var ease = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+  var last = 0;
+  function updateTags() {
+    if (!state.names) return;
+    var w = stage.clientWidth, h = stage.clientHeight;
+    var placed = [];
+    tags.forEach(function (t) {
+      t.v.copy(t.part.offset); t.part.object.localToWorld(t.v); t.v.project(camera);
+      var visible = t.v.z < 1 && Math.abs(t.v.x) < 1.1 && Math.abs(t.v.y) < 1.1;
+      t.el.classList.toggle("hidden", !visible);
+      if (!visible) return;
+      var x = (t.v.x + 1) / 2 * w, y = (1 - t.v.y) / 2 * h, tw = t.el.offsetWidth || 90, th = 22;
+      for (var i = 0; i < placed.length; i++) {            // nudge up until clear of earlier tags
+        var p = placed[i];
+        if (Math.abs(x - p.x) < (tw + p.w) / 2 + 6 && Math.abs(y - p.y) < th + 4) { y = p.y - th - 6; i = -1; }
+      }
+      placed.push({ x: x, y: y, w: tw });
+      t.el.style.left = x + "px"; t.el.style.top = y + "px";
+    });
+  }
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (explodeTween) { var e = Math.min(1, (now - explodeTween.t0) / explodeTween.dur); setExplode(explodeTween.from + (explodeTween.to - explodeTween.from) * ease(e)); if (e >= 1) explodeTween = null; }
+    controls.update();
+    if (state.reels && !reduced) reels.forEach(function (r) { r.rotation.z -= 0.035; });
+    renderer.render(scene, camera);
+    updateTags();
+    if (now - last > 120) {
+      last = now;
+      var az = Math.round(controls.getAzimuthalAngle() * 180 / Math.PI), el = Math.round(90 - controls.getPolarAngle() * 180 / Math.PI);
+      readout.textContent = "az " + az + "° · el " + el + "°";
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>

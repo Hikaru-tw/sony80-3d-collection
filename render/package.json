@@ -1,0 +1,17 @@
+{
+  "name": "sony-chf90-3d",
+  "version": "1.0.0",
+  "scripts": {
+    "viewer": "python build_viewer.py",
+    "gifs": "python make_gifs.py",
+    "render": "python prep.py && python prep2.py && python render2.py mode=wobble && python render2.py mode=turntable n=36 pitch=18 dist=4.3 && python render2.py mode=glb"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "description": "Render pipeline + viewer bundler for the Sony CHF 90 cassette 3D model",
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "private": true
+}

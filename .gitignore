@@ -1,0 +1,13 @@
+node_modules/
+__pycache__/
+*.pyc
+*.sheet.png
+*_frame0.png
+.DS_Store
+Thumbs.db
+# build copies: the site page is index.html at the root
+output/sony80_viewer.html
+render/viewer.html
+render/viewer_artifact.html
+.vscode/
+.idea/

@@ -1,0 +1,105 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#888}canvas{image-rendering:pixelated}</style></head>
+<body>
+<script type="module">
+import * as THREE from './node_modules/three/build/three.module.js';
+
+const q = new URLSearchParams(location.search);
+const num = (k, d) => q.has(k) ? parseFloat(q.get(k)) : d;
+const P = {
+  res:   num('res', 250),      // render resolution (upscaled 2x later for the pixel look)
+  tex:   q.get('tex') || 'linear',
+  depth: num('depth', 0.16),   // thickness relative to height (=1)
+  fov:   num('fov', 30),
+  dist:  num('dist', 4.4),
+  yaw0:  num('yaw0', 22), yawA: num('yawA', 8),
+  pit0:  num('pit0', 12), pitA: num('pitA', 7),
+  rollA: num('rollA', 0),
+  amb:   num('amb', 0.5), dir: num('dir', 0.77),
+  edges: num('edges', 1),
+  lit:   num('lit', 0),       // 1 = Lambert-shade the front face too; 0 = unlit (exact artwork colours)
+};
+const deg = d => d * Math.PI / 180;
+
+const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1);
+renderer.setSize(P.res, P.res);
+renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(P.fov, 1, 0.1, 100);
+camera.position.set(0, 0, P.dist);
+camera.lookAt(0, 0, 0);
+
+scene.add(new THREE.AmbientLight(0xffffff, P.amb));
+const dl = new THREE.DirectionalLight(0xffffff, P.dir);
+dl.position.set(0.3, 0.7, 0.65);
+scene.add(dl);
+
+const loader = new THREE.TextureLoader();
+async function tex(url) {
+  const t = await loader.loadAsync(url);
+  t.colorSpace = THREE.SRGBColorSpace;
+  if (P.tex === 'nearest') { t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; }
+  else { t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearMipmapLinearFilter; }
+  return t;
+}
+const frontTex = await tex(P.tex === 'nearest' ? 'front_lo.png' : 'front.png');
+const backTex  = await tex('back.png');
+
+// Rounded-rect shell, height 1, width = texture aspect
+const H = 1, W = frontTex.image.width / frontTex.image.height, R = 26 / 341;
+const shape = new THREE.Shape();
+shape.moveTo(R, 0); shape.lineTo(W - R, 0); shape.quadraticCurveTo(W, 0, W, R);
+shape.lineTo(W, H - R); shape.quadraticCurveTo(W, H, W - R, H);
+shape.lineTo(R, H); shape.quadraticCurveTo(0, H, 0, H - R);
+shape.lineTo(0, R); shape.quadraticCurveTo(0, 0, R, 0);
+const D = P.depth;
+const geo = new THREE.ExtrudeGeometry(shape, { depth: D, bevelEnabled: false, curveSegments: 6 });
+geo.translate(-W / 2, -H / 2, -D / 2);
+// Split the lid group: first half = back cap (z-), second half = front cap (z+)
+const lid = geo.groups[0].count, side = geo.groups[1];
+geo.clearGroups();
+geo.addGroup(0, lid / 2, 2);
+geo.addGroup(lid / 2, lid / 2, 0);
+geo.addGroup(side.start, side.count, 1);
+// Cap UVs are world x,y -> remap after the translate
+const uv = geo.attributes.uv, pos = geo.attributes.position;
+for (let i = 0; i < uv.count; i++) {
+  uv.setXY(i, (pos.getX(i) + W / 2) / W, (pos.getY(i) + H / 2) / H);
+}
+uv.needsUpdate = true;
+
+const po = { polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1 };
+const mats = [
+  P.lit ? new THREE.MeshLambertMaterial({ map: frontTex, ...po }) : new THREE.MeshBasicMaterial({ map: frontTex, ...po }),
+  new THREE.MeshLambertMaterial({ color: 0xbeae9a, ...po }),
+  new THREE.MeshLambertMaterial({ map: backTex, ...po }),
+];
+const mesh = new THREE.Mesh(geo, mats);
+const group = new THREE.Group();
+group.add(mesh);
+if (P.edges) {
+  const eg = new THREE.EdgesGeometry(geo, 40);
+  group.add(new THREE.LineSegments(eg, new THREE.LineBasicMaterial({ color: 0x211714 })));
+}
+scene.add(group);
+
+function pose(i, n) {
+  const t = 2 * Math.PI * i / n;
+  const yaw = deg(P.yaw0 + P.yawA * Math.sin(t));
+  const pitch = deg(P.pit0 - P.pitA * Math.cos(t));
+  const roll = deg(P.rollA * Math.sin(t + Math.PI / 2));
+  group.rotation.set(pitch, yaw, roll, 'XYZ');
+}
+
+window.renderFrames = (n) => {
+  const out = [];
+  for (let i = 0; i < n; i++) { pose(i, n); renderer.render(scene, camera); out.push(renderer.domElement.toDataURL('image/png')); }
+  return out;
+};
+pose(0, 23); renderer.render(scene, camera);
+window.READY = true;
+</script>
+</body></html>

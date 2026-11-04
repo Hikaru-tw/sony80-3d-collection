@@ -1,0 +1,163 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#888}canvas{image-rendering:pixelated}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+// Generic render page for the 8 products (products/<id>.js). Same API as model.html (renderWobble / renderTurntable /
+// renderStill / exportGLB) so render2.py drives both. Every model is centred and scaled to the same bounding-sphere
+// radius so the GIFs share one framing, and a screen-space ink pass (depth + normal edges) draws the sticker-style outlines.
+import * as THREE from 'three';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { makeKit } from './kit.js';
+
+const q = new URLSearchParams(location.search);
+const num = (k, d) => q.has(k) ? parseFloat(q.get(k)) : d;
+const P = {
+  id: q.get('id') || 'chf', res: num('res', 250), tex: q.get('tex') || 'nearest',
+  fov: num('fov', 30), dist: num('dist', 4.1), radius: num('radius', 0.94),
+  yaw0: num('yaw0', 22), yawA: num('yawA', 9), pit0: num('pit0', 12), pitA: num('pitA', 8),
+  q, amb: num('amb', 1.6), dir: num('dir', 1.9), ink: num('ink', -1), inkw: num('inkw', 0), shell: q.get('shell') || 'tan', explode: num('explode', 0),
+  ortho: num('ortho', 0), ox: num('ox', 0), oy: num('oy', 0),   // ortho=<span mm>: measuring renders, model left in mm, 1 px = span/res mm
+};
+const deg = d => d * Math.PI / 180;
+
+const loader = new THREE.TextureLoader();
+async function tex(url) {
+  const t = await loader.loadAsync(url); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  if (P.tex === 'nearest') { t.magFilter = t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; }
+  else { t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearMipmapLinearFilter; }
+  return t;
+}
+const mod = (await import(`./products/${P.id}.js`)).default;
+const lo = P.tex === 'nearest' ? '_lo' : '';
+const T = {};
+for (const name of mod.textures) {
+  T[name] = await tex(name + lo + '.png');
+  if (lo) { const im = new Image(); im.src = name + '.png'; await im.decode(); T[name].userData.size = [im.naturalWidth, im.naturalHeight]; }   // mappings are in full-res sticker px
+}
+const K = makeKit(THREE, { art: T[mod.textures[0]] });
+if (P.ink < 0) P.ink = mod.ink ?? 2;   // 0 off, 1 silhouette, 1.5 + parts in front of parts, 2 + sharp creases
+if (P.ortho) P.ink = Math.min(P.ink, 1);   // the depth test below assumes a perspective depth buffer
+const built = mod.build(THREE, K, T, P);
+const model = new THREE.Group(); model.add(built);
+if (!P.ortho) {
+  const sphere = new THREE.Box3().setFromObject(built).getBoundingSphere(new THREE.Sphere());
+  built.position.sub(sphere.center);
+  model.scale.setScalar(P.radius / sphere.radius * (mod.fit || 1));   // fit: per-product nudge when the sphere overstates the visible bulk
+}
+if (built.userData.setExplode) built.userData.setExplode(P.explode);
+
+// ---------- scene ----------
+const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = P.ortho ? new THREE.OrthographicCamera(-P.ortho / 2, P.ortho / 2, P.ortho / 2, -P.ortho / 2, 1, 4000) : new THREE.PerspectiveCamera(P.fov, 1, 0.1, 100);
+if (P.ortho) camera.position.set(P.ox, P.oy, 2000); else camera.position.set(0, 0, P.dist);
+camera.lookAt(P.ortho ? P.ox : 0, P.ortho ? P.oy : 0, 0);
+scene.add(new THREE.AmbientLight(0xffffff, P.amb));
+const dl = new THREE.DirectionalLight(0xffffff, P.dir); dl.position.set(0.3, 0.7, 0.65); scene.add(dl);
+scene.add(model);
+const lines = []; model.traverse(o => { if (o.isLine || o.isLineSegments || o.userData.noInk) lines.push(o); });   // kept out of the normal pass: feature lines, and parts flagged noInk (glowing beams)
+
+// ---------- ink pass: colour + (normal, depth) targets, edges where depth jumps or normals turn ----------
+const rtColor = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType });
+const rtNormal = new THREE.WebGLRenderTarget(1, 1, { depthTexture: new THREE.DepthTexture(1, 1) });
+const rtMask = new THREE.WebGLRenderTarget(1, 1, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter });   // ink amount per pixel
+const normalMat = new THREE.MeshNormalMaterial();
+const inkMat = new THREE.ShaderMaterial({
+  uniforms: {
+    tColor: { value: rtColor.texture }, tNormal: { value: rtNormal.texture }, tDepth: { value: rtNormal.depthTexture },
+    texel: { value: new THREE.Vector2() }, width: { value: 1 }, ink: { value: new THREE.Color(0x211714) },
+    near: { value: camera.near }, far: { value: camera.far }, enabled: { value: P.ink }, soft: { value: P.tex === 'nearest' ? 0 : 1 },
+    tanHalf: { value: Math.tan(deg(P.fov) / 2) }, aspect: { value: 1 },
+  },
+  vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+  fragmentShader: `
+    uniform sampler2D tColor, tNormal, tDepth; uniform vec2 texel; uniform float width, near, far, enabled, soft, tanHalf, aspect; uniform vec3 ink;
+    varying vec2 vUv;
+    float lin(float d) { float z = d * 2.0 - 1.0; return 2.0 * near * far / (far + near - z * (far - near)); }
+    vec3 ray(vec2 uv) { return vec3((uv.x * 2.0 - 1.0) * tanHalf * aspect, (uv.y * 2.0 - 1.0) * tanHalf, -1.0); }   // view ray, z = -1
+    float edgeAt(vec2 o, vec4 n0, float d0) {
+      vec4 n1 = texture2D(tNormal, vUv + o); float d1 = lin(texture2D(tDepth, vUv + o).r);
+      if (abs(n0.a - n1.a) > 0.5) return 1.0;                                                         // silhouette against the background
+      if (enabled > 1.2 && n0.a > 0.5) {                                                               // one part in front of another:
+        vec4 n2 = texture2D(tNormal, vUv - o); float d2 = lin(texture2D(tDepth, vUv - o).r);           // compare with the face's own depth
+        bool flat2 = n2.a > 0.5 && dot(n0.rgb * 2.0 - 1.0, n2.rgb * 2.0 - 1.0) > 0.995;               // there, extrapolated from the opposite
+        float pred = flat2 ? 1.0 / max(2.0 / d0 - 1.0 / d2, 1e-4) : d0;                                // neighbour (1/z is linear on screen), so a
+        vec3 nv = normalize(n0.rgb * 2.0 - 1.0); float dn = dot(nv, ray(vUv + o));                      // face seen edge-on doesn't ink itself; and
+        float predN = abs(dn) > 1e-4 ? dot(nv, ray(vUv) * d0) / dn : d0;                                // its own plane (view normal) carried to the
+        if (min(abs(d1 - pred), abs(d1 - predN)) > 0.02 * min(d0, d1)) return 1.0;                     // neighbour's ray, which holds across creases
+      }
+      if (enabled > 1.8 && n0.a > 0.5 && dot(n0.rgb * 2.0 - 1.0, n1.rgb * 2.0 - 1.0) < 0.3) return 1.0;   // sharp crease
+      return 0.0;
+    }
+    void main() {
+      vec4 c = texture2D(tColor, vUv), n0 = texture2D(tNormal, vUv);
+      float d0 = lin(texture2D(tDepth, vUv).r), e = 0.0, steps = min(width, 4.0);
+      if (enabled > 0.5) {
+        for (int r = 1; r <= 4; r++) {   // up to 4 rings; lines wider than 4 px spread them out (as in the viewer)
+          if (float(r) > steps + 0.01) break;
+          for (int i = 0; i < 8; i++) e = max(e, edgeAt(vec2(cos(float(i) * 0.7853982), sin(float(i) * 0.7853982)) * (float(r) * width / steps) * texel, n0, d0));
+        }
+        if (soft > 0.5 && e < 0.5) for (int i = 0; i < 8; i++) e = max(e, 0.5 * edgeAt(vec2(cos(float(i) * 0.7853982), sin(float(i) * 0.7853982)) * (width + 1.0) * texel, n0, d0));   // half-tone rim: smoother lines
+      }
+      gl_FragColor = vec4(e, 0.0, 0.0, 1.0);
+    }`,
+  depthTest: false, depthWrite: false,
+});
+// composite: colour + ink, without specks. Every real line is at least 2 px thick (both sides of an edge are inked) and runs
+// on, so it always has 6+ full-ink pixels in a 5 x 5 window (even at its end); a pixel with 5 or fewer is a speck (a pixel or a
+// short dash whose depth or normal came out wrong where a thin face is seen edge-on), dropped with its half-tone ring
+const compMat = new THREE.ShaderMaterial({
+  uniforms: { tColor: { value: rtColor.texture }, tMask: { value: rtMask.texture }, texel: { value: new THREE.Vector2() }, ink: { value: new THREE.Color(0x211714) } },
+  vertexShader: 'varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+  fragmentShader: `
+    uniform sampler2D tColor, tMask; uniform vec2 texel; uniform vec3 ink; varying vec2 vUv;
+    void main() {
+      vec4 c = texture2D(tColor, vUv); float e = texture2D(tMask, vUv).r;
+      if (e > 0.01) {
+        float n = 0.0;
+        for (int j = -2; j <= 2; j++) for (int i = -2; i <= 2; i++) n += step(0.99, texture2D(tMask, vUv + vec2(float(i), float(j)) * texel).r);
+        if (n < 5.5) e = 0.0;
+      }
+      gl_FragColor = linearToOutputTexel(mix(c, vec4(ink, 1.0), e));
+    }`,
+  depthTest: false, depthWrite: false,
+});
+const quadScene = new THREE.Scene(); quadScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), inkMat));
+const compScene = new THREE.Scene(); compScene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), compMat));
+const quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+function setRes(res) {
+  renderer.setSize(res, res); rtColor.setSize(res, res); rtNormal.setSize(res, res); rtMask.setSize(res, res);
+  inkMat.uniforms.texel.value.set(1 / res, 1 / res); compMat.uniforms.texel.value.set(1 / res, 1 / res); inkMat.uniforms.width.value = P.inkw || Math.max(1, Math.round(res / 250));
+}
+function draw() {
+  renderer.setRenderTarget(rtColor); renderer.clear(); renderer.render(scene, camera);
+  lines.forEach(l => { l.visible = false; }); scene.overrideMaterial = normalMat;
+  renderer.setRenderTarget(rtNormal); renderer.clear(); renderer.render(scene, camera);
+  scene.overrideMaterial = null; lines.forEach(l => { l.visible = true; });
+  renderer.setRenderTarget(rtMask); renderer.clear(); renderer.render(quadScene, quadCam);
+  renderer.setRenderTarget(null); renderer.render(compScene, quadCam);
+}
+setRes(P.res);
+
+function pose(yaw, pitch) { model.rotation.set(deg(pitch), deg(yaw), 0, 'XYZ'); }
+const shot = () => { draw(); return renderer.domElement.toDataURL('image/png'); };
+window.renderWobble = n => Array.from({ length: n }, (_, i) => { const t = 2 * Math.PI * i / n; pose(P.yaw0 + P.yawA * Math.sin(t), P.pit0 - P.pitA * Math.cos(t)); return shot(); });
+window.renderTurntable = (n, pitch) => Array.from({ length: n }, (_, i) => { pose(360 * i / n, pitch); return shot(); });
+window.renderStill = (yaw, pitch, res) => { if (res) setRes(res); pose(yaw, pitch); return shot(); };
+window.exportGLB = () => new Promise((res, rej) => {
+  model.rotation.set(0, 0, 0);
+  const hidden = []; model.traverse(o => { if (o.isLine || o.isLineSegments) { o.visible = false; hidden.push(o); } });
+  const ud = built.userData; built.userData = {};
+  new GLTFExporter().parse(model, buf => {
+    built.userData = ud; hidden.forEach(o => { o.visible = true; });
+    const b = new Uint8Array(buf); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+    res(btoa(s));
+  }, rej, { binary: true, onlyVisible: true });
+});
+pose(P.yaw0, P.pit0); draw();
+window.READY = true;
+</script>
+</body></html>

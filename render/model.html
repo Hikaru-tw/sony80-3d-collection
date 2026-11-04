@@ -1,0 +1,62 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>html,body{margin:0;background:#888}canvas{image-rendering:pixelated}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { buildCassette } from './cassette.js';
+
+// ---------- parameters (override via ?key=value) ----------
+const q = new URLSearchParams(location.search);
+const num = (k, d) => q.has(k) ? parseFloat(q.get(k)) : d;
+const P = {
+  res: num('res', 250), tex: q.get('tex') || 'nearest',
+  fov: num('fov', 30), dist: num('dist', 4.1),
+  yaw0: num('yaw0', 22), yawA: num('yawA', 9), pit0: num('pit0', 12), pitA: num('pitA', 8),
+  amb: num('amb', 1.6), dir: num('dir', 1.9), edges: num('edges', 1), depth: num('depth', 0.19), explode: num('explode', 0), ghost: num('ghost', 0),
+};
+const deg = d => d * Math.PI / 180;
+
+const loader = new THREE.TextureLoader();
+async function tex(url) {
+  const t = await loader.loadAsync(url); t.colorSpace = THREE.SRGBColorSpace;
+  if (P.tex === 'nearest') { t.magFilter = t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; }
+  else { t.magFilter = THREE.LinearFilter; t.minFilter = THREE.LinearMipmapLinearFilter; }
+  return t;
+}
+const lo = P.tex === 'nearest' ? '_lo' : '';
+const labelA = await tex('label_a' + lo + '.png'), labelB = await tex('label_b' + lo + '.png');
+const model = buildCassette(THREE, { labelA, labelB, edges: !!P.edges, depth: P.depth, shell: q.get('shell') || 'tan' });
+model.userData.setExplode(P.explode); if (P.ghost) model.userData.setGhost(true);
+
+// ---------- scene / render ----------
+const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.setSize(P.res, P.res); renderer.setClearColor(0x000000, 0);
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(P.fov, 1, 0.1, 100); camera.position.set(0, 0, P.dist); camera.lookAt(0, 0, 0);
+scene.add(new THREE.AmbientLight(0xffffff, P.amb));
+const dl = new THREE.DirectionalLight(0xffffff, P.dir); dl.position.set(0.3, 0.7, 0.65); scene.add(dl);
+scene.add(model);
+
+function pose(yaw, pitch) { model.rotation.set(deg(pitch), deg(yaw), 0, 'XYZ'); }
+const shot = () => { renderer.render(scene, camera); return renderer.domElement.toDataURL('image/png'); };
+window.renderWobble = n => Array.from({ length: n }, (_, i) => { const t = 2 * Math.PI * i / n; pose(P.yaw0 + P.yawA * Math.sin(t), P.pit0 - P.pitA * Math.cos(t)); return shot(); });
+window.renderTurntable = (n, pitch) => Array.from({ length: n }, (_, i) => { pose(360 * i / n, pitch); return shot(); });
+window.renderStill = (yaw, pitch, res) => { if (res) renderer.setSize(res, res); pose(yaw, pitch); return shot(); };
+window.exportGLB = () => new Promise((res, rej) => {
+  model.rotation.set(0, 0, 0);
+  model.traverse(o => { if (o.isLine || o.isLineSegments || o.isLineLoop) o.visible = false; });
+  const ud = model.userData; model.userData = { dims: ud.dims };   // userData holds Object3D refs; the exporter would dump them into extras
+  new GLTFExporter().parse(model, buf => {
+    model.userData = ud;
+    model.traverse(o => { if (o.isLine || o.isLineSegments || o.isLineLoop) o.visible = true; });
+    const b = new Uint8Array(buf); let s = ''; for (let i = 0; i < b.length; i += 0x8000) s += String.fromCharCode.apply(null, b.subarray(i, i + 0x8000));
+    res(btoa(s));
+  }, rej, { binary: true, onlyVisible: true });
+});
+pose(P.yaw0, P.pit0); renderer.render(scene, camera);
+window.READY = true;
+</script>
+</body></html>

@@ -1,0 +1,1264 @@
+<!--HEAD-->
+<title>Sony 80th · 3D Collection by Hikaru</title>
+<meta name="description" content="Eight Sony classics, from the 1955 TR-55 to the 2003 Cyber-shot DSC-P8, as 3D models you can turn, open up and make GIFs from. Made by Hikaru Digital Marketing.">
+<meta name="author" content="Hikaru Digital Marketing">
+<meta name="theme-color" content="#FFFFFF">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hikaru Digital Marketing">
+<meta property="og:title" content="Sony 80th · 3D Collection">
+<meta property="og:description" content="Eight Sony classics as 3D models you can turn, open up and make GIFs from. By Hikaru Digital Marketing.">
+<meta property="og:url" content="https://hikaru-tw.github.io/sony80-3d-collection/">
+<meta property="og:image" content="https://hikaru-tw.github.io/sony80-3d-collection/output/social.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<!--FAVICON-->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arvo:wght@700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* single-theme like the cassette viewer: white ground in every OS theme */
+  :root {
+    --bg: #FFFFFF; --panel: #FFFFFF; --panel-edge: #DDD5C8; --ink: #211714; --muted: #6E6158;
+    --accent: #E5642A; --accent-hover: #CF5520; --accent-ink: #FFFFFF; --hover: #F3EEE6; --focus: #E5642A;
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.4 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+  .app { position: fixed; inset: 0; display: grid; grid-template-rows: auto auto 1fr; grid-template-columns: minmax(0, 1fr); background: var(--bg); }   /* minmax: a long product line ellipsizes instead of widening the page */
+  /* header: Sony | title ............ actions | created by hikaru */
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 64px; box-sizing: border-box; padding: 0 24px; border-bottom: 1px solid var(--panel-edge); background: var(--bg); }
+  .brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+  .sony { display: block; height: 19px; width: auto; flex: 0 0 auto; fill: #000000; }
+  .rule { width: 1px; height: 28px; background: var(--panel-edge); flex: 0 0 auto; }
+  .titles { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .eyebrow { font: 600 10.5px/1 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .title { font: 600 16px/1.1 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; letter-spacing: -0.005em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .actions { display: flex; align-items: center; gap: 8px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: 6px; font-size: 13.5px; font-weight: 500; letter-spacing: 0.01em; white-space: nowrap; }
+  .btn svg { width: 16px; height: 16px; flex: 0 0 auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .btn.solid { background: var(--ink); border-color: var(--ink); color: #FFFFFF; }
+  .btn.solid:hover { background: #3A2D28; border-color: #3A2D28; }
+  .btn.solid svg .fillme { fill: currentColor; stroke: none; }
+  .btn.active svg, .btn[aria-pressed="true"] svg { stroke: currentColor; }
+  .credit { display: flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; white-space: nowrap; border-radius: 4px; }
+  .credit-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+  .hikaru { display: block; width: 77px; height: 16px; background: var(--ink); -webkit-mask: var(--hikaru-logo) center / contain no-repeat; mask: var(--hikaru-logo) center / contain no-repeat; transition: background 120ms; }
+  .credit:hover .hikaru { background: var(--accent); }
+  .credit:hover .credit-label { color: var(--ink); }
+  .credit:focus-visible { outline: 2px solid var(--focus); outline-offset: 4px; }
+  :root { --hikaru-logo: url(__HIKARU_PNG__); }
+  /* the product on show, top left of the stage */
+  .info { position: absolute; left: 20px; top: 16px; display: flex; flex-direction: column; gap: 5px; max-width: min(560px, calc(100% - 380px)); pointer-events: none; }
+  .model { font: 600 18px/1.2 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; color: var(--accent); letter-spacing: 0.01em; }
+  .meta { color: var(--muted); font-size: 13px; line-height: 1.45; }
+  .readout { position: absolute; left: 20px; bottom: 40px; font: 500 11px/1 "IBM Plex Mono", "Consolas", monospace; color: var(--muted); font-variant-numeric: tabular-nums; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; pointer-events: none; opacity: 0.85; }
+  .strip-row { display: flex; align-items: center; min-width: 0; border-bottom: 1px solid var(--panel-edge); }
+  .strip { flex: 1 1 auto; min-width: 0; display: flex; gap: 6px; padding: 8px 20px; overflow-x: auto; scrollbar-width: thin; }
+  /* 3D / GIF: a segmented switch at the end of the product strip */
+  .mode { flex: 0 0 auto; display: flex; gap: 2px; padding: 3px; margin: 0 24px 0 4px; background: var(--hover); border-radius: 8px; }
+  .mode button { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font-size: 13px; font-weight: 600; transition: none; }
+  .mode button:hover { background: transparent; color: var(--ink); }
+  .mode button[aria-pressed="true"], .mode button[aria-pressed="true"]:hover { background: #FFFFFF; color: var(--ink); box-shadow: 0 1px 3px rgba(33, 23, 20, 0.16); }
+  .mode svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  /* GIF mode: the product's GIF from the set, on the stage ground */
+  .gifview { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; transition: opacity 350ms ease; }
+  .gifview img { display: block; height: min(500px, calc(100% - 150px)); max-width: calc(100% - 40px); aspect-ratio: 1; object-fit: contain; }
+  .gifview.pixel img { image-rendering: pixelated; }
+  .app.gifmode canvas { visibility: hidden; }
+  .app.gifmode .readout, .app.gifmode .hint, .app.gifmode .guide { display: none; }
+  .stage.fading canvas, .stage.fading .gifview { opacity: 0; }
+  .dock .off { display: none !important; }
+  .chip { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; padding: 4px 12px 4px 4px; text-align: left; }
+  .chip img { width: 36px; height: 36px; object-fit: contain; }
+  .chip b { display: block; font-weight: 600; font-size: 13px; line-height: 1.2; }
+  .chip small { display: block; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .chip[aria-pressed="true"] small { color: var(--accent-ink); }
+  .stage { position: relative; min-height: 0; overflow: hidden; background-color: #FFFFFF; }
+  canvas { display: block; width: 100%; height: 100%; touch-action: none; outline: none; transition: opacity 350ms ease; }
+  canvas.pixel { image-rendering: pixelated; }
+  .hint { position: absolute; left: 20px; bottom: 16px; color: var(--muted); font-size: 12px; letter-spacing: 0.02em; pointer-events: none; }
+  .loading { color: var(--muted); font-size: 12px; letter-spacing: 0.02em; }
+  .loading:empty { display: none; }
+  .dock { position: absolute; right: 16px; bottom: 16px; display: flex; flex-direction: column; gap: 10px; align-items: flex-end; }
+  .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 8px 10px; background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 6px; box-shadow: 0 6px 20px rgba(33, 23, 20, 0.10); }
+  .label { font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-right: 4px; min-width: 38px; }
+  button, .link { appearance: none; border: 1px solid var(--panel-edge); background: transparent; color: var(--ink); font: inherit; font-weight: 500; padding: 6px 11px; border-radius: 4px; cursor: pointer; transition: background 120ms, border-color 120ms; text-decoration: none; }
+  button:hover, .link:hover { background: var(--hover); }
+  button:focus-visible, input:focus-visible, .link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  button.active, button[aria-pressed="true"], .primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  button.primary:hover, .link.primary:hover, button[aria-pressed="true"]:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  button:disabled { opacity: 0.45; cursor: default; }
+  .slider { display: inline-flex; align-items: center; gap: 8px; padding: 0 4px; }
+  .slider span { font-size: 13px; font-weight: 500; }
+  input[type="range"] { width: 150px; accent-color: var(--accent); }
+  .bar-right { display: flex; align-items: center; gap: 20px; flex: 0 0 auto; }
+  /* stage ground: chosen in the Adjust panel (the page itself stays white) */
+  .stage.bg-clear { background-color: #FFFFFF; background-image: linear-gradient(45deg, #ECE7E0 25%, transparent 25%), linear-gradient(-45deg, #ECE7E0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ECE7E0 75%), linear-gradient(-45deg, transparent 75%, #ECE7E0 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0; }
+  .stage.on-dark .hint, .stage.on-dark .loading, .stage.on-dark .meta, .stage.on-dark .readout { color: #D9D2C9; }
+  /* Adjust panel: four tabs */
+  .panel { position: absolute; top: 16px; right: 16px; width: 296px; max-height: calc(100% - 220px); min-height: 120px; overflow-y: auto; padding: 0 14px 12px; background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 6px; box-shadow: 0 6px 20px rgba(33, 23, 20, 0.10); }
+  .tabs { position: sticky; top: 0; z-index: 1; display: flex; margin: 0 -14px 2px; padding: 4px 8px 0; background: var(--panel); border-bottom: 1px solid var(--panel-edge); }
+  .tab { flex: 1 1 auto; border: 0; border-bottom: 2px solid transparent; border-radius: 0; margin-bottom: -1px; padding: 8px 6px; color: var(--muted); font-size: 13px; font-weight: 600; }
+  .tab:hover { background: transparent; color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+  .panel h3 { margin: 12px 0 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .row { display: grid; grid-template-columns: 58px 1fr 50px; align-items: center; gap: 8px; margin: 2px 0; min-height: 30px; }
+  .row > span { font-size: 13px; font-weight: 500; }
+  .row output { font: 500 12px/1 "IBM Plex Mono", "Consolas", monospace; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+  .row input[type="range"] { width: 100%; margin: 0; }
+  .seg { grid-column: 2 / 4; display: flex; flex-wrap: wrap; gap: 4px; }
+  .seg button { padding: 5px 9px; font-size: 13px; }
+  .btns { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 8px 0 2px; }
+  .check { display: flex; align-items: center; gap: 8px; min-height: 30px; font-size: 13px; font-weight: 500; cursor: pointer; }
+  .check input { width: 16px; height: 16px; margin: 0; accent-color: var(--accent); }
+  .note { margin: 6px 0 0; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .loop { font: 500 12px/1 "IBM Plex Mono", "Consolas", monospace; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .swatches { grid-column: 2 / 4; display: flex; gap: 8px; }
+  .swatch { width: 28px; height: 28px; padding: 0; border-radius: 50%; border: 1px solid #BFB5A8; background: var(--sw); }
+  .swatch:hover, .swatch[aria-pressed="true"]:hover { background: var(--sw); border-color: var(--ink); }
+  .swatch[aria-pressed="true"] { background: var(--sw); border-color: var(--ink); box-shadow: 0 0 0 2px var(--panel), 0 0 0 4px var(--accent); }
+  .swatch.clear, .swatch.clear:hover { background-color: #FFFFFF; background-image: linear-gradient(45deg, #D9D2C9 25%, transparent 25%, transparent 75%, #D9D2C9 75%), linear-gradient(45deg, #D9D2C9 25%, transparent 25%, transparent 75%, #D9D2C9 75%); background-size: 10px 10px; background-position: 0 0, 5px 5px; }
+  .keys { margin: 14px 0 0; padding-top: 10px; border-top: 1px solid var(--panel-edge); font-size: 12px; color: var(--muted); line-height: 1.8; }
+  kbd { font: 500 11px/1 "IBM Plex Mono", "Consolas", monospace; color: var(--ink); border: 1px solid var(--panel-edge); border-bottom-width: 2px; border-radius: 3px; padding: 1px 4px; background: #FAF8F5; }
+  /* the square a GIF / PNG takes from the view (Export tab) */
+  .guide { position: absolute; pointer-events: none; border: 1px dashed var(--accent); box-shadow: 0 0 0 200vmax rgba(33, 23, 20, 0.07); }
+  .guide span { position: absolute; left: 8px; top: 6px; font: 500 11px/1 "IBM Plex Mono", "Consolas", monospace; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); }
+  /* export progress and result */
+  .busy { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); display: flex; align-items: center; gap: 12px; padding: 8px 8px 8px 14px; background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 6px; box-shadow: 0 6px 20px rgba(33, 23, 20, 0.12); font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .meter { width: 120px; height: 4px; border-radius: 2px; background: var(--hover); overflow: hidden; }
+  .meter i { display: block; height: 100%; width: 0; background: var(--accent); }
+  .app.exporting .strip, .app.exporting .dock, .app.exporting .panel, .app.exporting .bar-right button { pointer-events: none; opacity: 0.55; }
+  .result, .about { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(600px, calc(100% - 32px)); max-height: calc(100% - 32px); overflow-y: auto; box-sizing: border-box; padding: 16px; background: var(--panel); border: 1px solid var(--panel-edge); border-radius: 8px; box-shadow: 0 16px 48px rgba(33, 23, 20, 0.20); }
+  .result h2 { margin: 0 0 12px; font-size: 15px; font-weight: 600; }
+  .about { width: min(620px, calc(100% - 32px)); padding: 22px 24px 18px; line-height: 1.55; outline: none; }
+  .about .sony { height: 17px; }
+  .about h2 { margin: 6px 0 10px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; }
+  .about h3 { margin: 18px 0 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .about p { margin: 0 0 8px; font-size: 14px; }
+  .about ul { margin: 0; padding-left: 18px; }
+  .about li { margin: 0 0 4px; color: var(--muted); font-size: 13px; }
+  .about a:not(.link) { color: var(--ink); text-decoration-color: var(--accent); text-underline-offset: 2px; }
+  .about a:not(.link):hover { color: var(--accent); }
+  .maker { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 16px; padding: 14px 16px; margin: 14px 0 8px; background: var(--hover); border-radius: 6px; }
+  .maker .hikaru { width: 96px; height: 20px; }
+  .maker div { display: flex; flex-direction: column; gap: 2px; }
+  .maker b { font-size: 15px; }
+  .maker span { color: var(--muted); font-size: 13px; }
+  .about .btns { margin-top: 12px; }
+  .about .fine { margin-top: 14px; font-size: 12px; color: var(--muted); }
+  .result-media { display: grid; gap: 8px; }
+  .result-media.grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .result-media.one { justify-items: center; }
+  .result-media a { display: block; color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 500; text-align: center; border-radius: 4px; }
+  .result-media.one a { width: min(100%, 380px); }
+  .result-media img { display: block; width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 4px; background: var(--rg, #FFFFFF); }
+  .result-media.clear img { background-color: #FFFFFF; background-image: linear-gradient(45deg, #ECE7E0 25%, transparent 25%, transparent 75%, #ECE7E0 75%), linear-gradient(45deg, #ECE7E0 25%, transparent 25%, transparent 75%, #ECE7E0 75%); background-size: 16px 16px; background-position: 0 0, 8px 8px; }
+  .result-media.pixel img { image-rendering: pixelated; }
+  .result-media a span { display: block; margin-top: 4px; }
+  .result-media a:hover span { color: var(--ink); }
+  .result p { margin: 12px 0 0; font: 500 12px/1.5 "IBM Plex Mono", "Consolas", monospace; color: var(--muted); }
+  .result .btns { justify-content: flex-end; margin-top: 12px; }
+  /* showcase: the stage alone, with a caption */
+  .app.showcase { grid-template-rows: 1fr; }
+  .app.showcase .bar, .app.showcase .strip-row, .app.showcase .dock, .app.showcase .hint, .app.showcase .panel, .app.showcase .guide, .app.showcase .info, .app.showcase .readout { display: none; }
+  .sc-credit { position: absolute; left: clamp(20px, 4vw, 64px); top: clamp(18px, 3.5vh, 36px); display: flex; align-items: center; gap: 8px; color: var(--muted); pointer-events: none; }
+  .sc-credit .hikaru { width: 72px; height: 15px; }
+  .sc-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+  .stage.on-dark .sc-credit { color: #CFC6BC; }
+  .stage.on-dark .sc-credit .hikaru { background: #F3EEE6; }
+  .app.showcase.idle, .app.showcase.idle canvas { cursor: none; }
+  .caption { position: absolute; left: clamp(20px, 4vw, 64px); bottom: clamp(24px, 6vh, 72px); max-width: min(78%, 760px); pointer-events: none; color: var(--ink); }
+  .cap-mark { display: block; }
+  .cap-mark .sony { height: clamp(14px, 1.5vw, 22px); }
+  .stage.on-dark .sony { fill: #FFFFFF; }
+  .cap-name { display: block; margin-top: 12px; font: 600 clamp(28px, 4.4vw, 60px)/1.05 "IBM Plex Sans", "Segoe UI", system-ui, sans-serif; letter-spacing: -0.01em; }
+  .cap-name span { white-space: nowrap; }   /* break between words, never at the hyphen in WM-F5 */
+  .cap-line { display: block; margin-top: 12px; font: 500 clamp(12px, 1.15vw, 16px)/1.4 "IBM Plex Mono", "Consolas", monospace; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
+  .cap-line b { color: var(--accent); font-weight: 500; }
+  .stage.on-dark .caption { color: #F3EEE6; }
+  .stage.on-dark .cap-line { color: #CFC6BC; }
+  .progress { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(33, 23, 20, 0.08); pointer-events: none; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--accent); }
+  .exit { position: absolute; top: 16px; right: 16px; background: var(--panel); box-shadow: 0 6px 20px rgba(33, 23, 20, 0.12); }
+  @media (max-width: 1000px) { .hint { display: none; } .readout { bottom: 16px; } }   /* it would run under the dock */
+  @media (max-width: 1060px) { .credit-label { display: none; } }
+  @media (max-width: 860px) { .btn.ghost .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } .btn.ghost { width: 36px; padding: 0; } }
+  @media (max-width: 640px) {
+    .meta, .hint, .readout { display: none; }
+    .bar { height: 56px; padding: 0 12px; gap: 12px; }
+    .brand { gap: 10px; }
+    .sony { height: 14px; }
+    .rule { height: 24px; }
+    .eyebrow { display: none; }
+    .title { font-size: 13px; }
+    .bar-right, .actions { gap: 6px; }
+    .btn .lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .btn { width: 34px; height: 34px; padding: 0; }
+    .hikaru { width: 58px; height: 12px; }
+    .info { left: 12px; top: 10px; max-width: calc(100% - 24px); }
+    .model { font-size: 16px; }
+    .about { padding: 18px 16px 14px; }
+    .strip { padding-left: 12px; padding-right: 12px; }
+    .chip small { display: none; }
+    .dock { left: 12px; right: 12px; bottom: 12px; align-items: stretch; }
+    .group { justify-content: center; }
+    .panel { top: 8px; left: 12px; right: 12px; width: auto; max-height: 52%; }
+    .result-media.grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 430px) { .titles, .brand .rule { display: none; } }
+  @media (max-width: 640px) { .mode { margin-right: 12px; } .mode button { padding: 0 10px; } .gifview img { height: min(500px, calc(100% - 210px)); } }
+  @media (prefers-reduced-motion: reduce) { button, .link, canvas { transition: none; } }
+</style>
+<!--BODY-->
+<div class="app" id="app">
+  <header class="bar">
+    <div class="brand">
+      <svg class="sony" viewBox="0 0 1280 225.28" role="img" aria-label="Sony"><path d="__SONY_PATH__"/></svg>
+      <span class="rule" aria-hidden="true"></span>
+      <div class="titles"><span class="eyebrow">80th Anniversary</span><span class="title">3D Collection</span></div>
+    </div>
+    <div class="bar-right">
+      <div class="actions">
+        <button class="btn ghost" id="aboutBtn" aria-haspopup="dialog" aria-controls="about" title="About this collection"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.2M12 7.8h.01"/></svg><span class="lbl">About</span></button>
+        <button class="btn ghost" id="adjustBtn" aria-expanded="false" aria-controls="panel" title="View, light, motion and export (C)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg><span class="lbl">Adjust</span></button>
+        <button class="btn solid" id="showBtn" title="Full-window presentation (S)"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fillme" d="M8.5 6.2v11.6c0 .7.8 1.2 1.4.8l9-5.8c.6-.4.6-1.2 0-1.6l-9-5.8c-.6-.4-1.4.1-1.4.8z"/></svg><span class="lbl">Showcase</span></button>
+      </div>
+      <span class="rule" aria-hidden="true"></span>
+      <a class="credit" href="https://www.hikaru.com.tw/" target="_blank" rel="noopener" aria-label="Created by Hikaru Digital Marketing"><span class="credit-label">Created by</span><span class="hikaru"></span></a>
+    </div>
+  </header>
+  <div class="strip-row">
+    <nav class="strip" id="strip" role="group" aria-label="Products"></nav>
+    <div class="mode" role="group" aria-label="Show as">
+      <button id="mode3d" aria-pressed="true" title="Interactive 3D model (G switches)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></svg>3D</button>
+      <button id="modeGif" aria-pressed="false" title="The product's GIF from the set (G switches)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 15.5l4.5-4 4 3.5 3-2.5 5.5 4.5"/><circle cx="15.5" cy="9.5" r="1.5"/></svg>GIF</button>
+    </div>
+  </div>
+  <div class="stage" id="stage">
+    <canvas id="c" tabindex="0" aria-label="Interactive 3D product model"></canvas>
+    <div class="gifview" id="gifview" hidden><img id="gifImg" alt=""></div>
+    <div class="guide" id="guide" hidden><span>GIF / PNG frame</span></div>
+    <div class="info"><span class="model" id="name"></span><span class="meta" id="meta"></span><span class="loading" id="loading" aria-live="polite"></span></div>
+    <div class="readout" id="readout" aria-live="off">az 0° · el 0°</div>
+    <div class="hint">Drag to orbit · Scroll to zoom · Right‑drag to pan · ← → product · C adjust · P play loop · S showcase · G 3D / GIF</div>
+    <div class="caption" id="caption" hidden><span class="cap-mark"><svg class="sony" viewBox="0 0 1280 225.28" role="img" aria-label="Sony"><path d="__SONY_PATH__"/></svg></span><span class="cap-name" id="capName"></span><span class="cap-line" id="capLine"></span></div>
+    <div class="progress" id="progress" hidden><i id="progressBar"></i></div>
+    <div class="sc-credit" id="scCredit" hidden><span class="sc-label">Created by</span><span class="hikaru" role="img" aria-label="Hikaru"></span></div>
+    <button class="exit" id="exitBtn" hidden>Exit showcase</button>
+    <aside class="panel" id="panel" aria-label="Adjust" hidden>
+      <div class="tabs" role="tablist" aria-label="Adjust">
+        <button class="tab" role="tab" id="tab-view" aria-controls="pane-view" aria-selected="true">View</button>
+        <button class="tab" role="tab" id="tab-light" aria-controls="pane-light" aria-selected="false" tabindex="-1">Light</button>
+        <button class="tab" role="tab" id="tab-motion" aria-controls="pane-motion" aria-selected="false" tabindex="-1">Motion</button>
+        <button class="tab" role="tab" id="tab-export" aria-controls="pane-export" aria-selected="false" tabindex="-1">Export</button>
+      </div>
+      <section role="tabpanel" id="pane-view" aria-labelledby="tab-view">
+        <h3>Camera</h3>
+        <label class="row"><span>Zoom</span><input type="range" id="zoom" min="0" max="100" step="0.5"><output id="zoomOut"></output></label>
+        <label class="row" title="Wide angle to almost flat; the product keeps its size on screen"><span>Lens</span><input type="range" id="fov" min="8" max="60" step="1" value="30"><output id="fovOut"></output></label>
+        <label class="row" title="Auto-rotate speed"><span>Spin</span><input type="range" id="spin" min="0.2" max="6" step="0.1"><output id="spinOut"></output></label>
+        <div class="btns"><button id="resetView">Reset view</button><button id="fullBtn" aria-pressed="false">Fullscreen</button></div>
+        <h3>Look</h3>
+        <div class="row"><span>Ground</span><div class="swatches" role="group" aria-label="Background" id="swatches"></div></div>
+        <label class="row"><span>Outline</span><input type="range" id="lineW" min="0.5" max="3" step="0.1"><output id="lineWOut"></output></label>
+      </section>
+      <section role="tabpanel" id="pane-light" aria-labelledby="tab-light" hidden>
+        <h3>Presets</h3>
+        <div class="btns" role="group" aria-label="Light presets" id="lightPresets"></div>
+        <h3>Key light</h3>
+        <label class="row" title="Where the key light comes from, round the camera (0 = from the camera, + = from the right)"><span>Angle</span><input type="range" id="lightAz" min="-180" max="180" step="1"><output id="lightAzOut"></output></label>
+        <label class="row"><span>Height</span><input type="range" id="lightEl" min="-30" max="90" step="1"><output id="lightElOut"></output></label>
+        <label class="row"><span>Key</span><input type="range" id="keyI" min="0" max="4" step="0.05"><output id="keyIOut"></output></label>
+        <label class="row" title="Ambient light, from everywhere"><span>Fill</span><input type="range" id="ambI" min="0" max="3" step="0.05"><output id="ambIOut"></output></label>
+      </section>
+      <section role="tabpanel" id="pane-motion" aria-labelledby="tab-motion" hidden>
+        <h3>Loop</h3>
+        <div class="row"><span>Motion</span><div class="seg" role="group" aria-label="Motion" id="motionSeg"></div></div>
+        <label class="row" title="Frames in one loop (also the GIF's frame count)"><span>Frames</span><input type="range" id="frames" min="8" max="72" step="1"><output id="framesOut"></output></label>
+        <label class="row" title="Time per frame"><span>Delay</span><input type="range" id="delay" min="40" max="200" step="10"><output id="delayOut"></output></label>
+        <div class="btns"><button id="playBtn" aria-pressed="false" title="P">Play loop</button><span class="loop" id="loopLen"></span></div>
+        <h3>Showcase</h3>
+        <div class="row"><span>Next</span><div class="seg" role="group" aria-label="Next product after" id="everySeg"></div></div>
+        <label class="check"><input type="checkbox" id="capChk"> Show the name and year</label>
+        <div class="btns"><button class="primary" id="startShow" title="S">Start showcase</button></div>
+        <p class="note">Fills the window and plays the loop. With Next on, it moves to the next product when a loop ends. Esc or S to leave, ← → to step.</p>
+      </section>
+      <section role="tabpanel" id="pane-export" aria-labelledby="tab-export" hidden>
+        <h3>GIF and PNG</h3>
+        <div class="row"><span>Size</span><div class="seg" role="group" aria-label="Size in pixels" id="sizeSeg"></div></div>
+        <div class="row"><span>Style</span><div class="seg" role="group" aria-label="Style" id="styleSeg"></div></div>
+        <div class="row"><span>Ground</span><div class="seg" role="group" aria-label="Ground" id="groundSeg"></div></div>
+        <div class="btns"><button class="primary" id="makeGif">Make GIF</button><button id="makePng">Save PNG</button><button id="makeAll">All 8 as .zip</button></div>
+        <p class="note">Takes the square marked on the stage, with this light and outline and the loop from Motion. At zoom 1.00× and the 3/4 view it matches the GIF set. All 8 uses this view for every product (Open up and Inside use each product's inside view).</p>
+      </section>
+      <p class="keys"><kbd>1</kbd>–<kbd>7</kbd> views · <kbd>I</kbd> inside · <kbd>+</kbd> <kbd>−</kbd> zoom · <kbd>R</kbd> reset · <kbd>P</kbd> play loop · <kbd>S</kbd> showcase · <kbd>G</kbd> 3D / GIF · <kbd>F</kbd> fullscreen · <kbd>C</kbd> this panel · <kbd>←</kbd> <kbd>→</kbd> product</p>
+    </aside>
+    <nav class="dock" aria-label="Viewer controls">
+      <div class="group" role="group" aria-label="GIF" id="gifDock" hidden><span class="label">GIF</span>
+        <button id="gifPixel" aria-pressed="true">Pixel</button>
+        <button id="gifSmooth" aria-pressed="false">Smooth</button>
+        <a class="link" id="gifDl" href="#" download>Download</a>
+        <a class="link" href="./gifs/index.html">All 16 GIFs</a>
+      </div>
+      <div class="group" role="group" aria-label="Preset views" data-3d><span class="label">View</span>
+        <button data-view="hero" class="active" title="1">3/4</button>
+        <button data-view="front" title="2">Front</button>
+        <button data-view="right" title="3">Right</button>
+        <button data-view="back" title="4">Back</button>
+        <button data-view="left" title="5">Left</button>
+        <button data-view="top" title="6">Top</button>
+        <button data-view="bottom" title="7">Bottom</button>
+        <button data-view="inside" id="insideBtn" title="I" hidden>Inside</button>
+      </div>
+      <div class="group" role="group" aria-label="Inside" id="inside" data-3d hidden><span class="label">Inside</span>
+        <label class="slider"><span id="openLabel">Open</span><input type="range" id="explode" min="0" max="100" value="0" aria-label="Open it up"></label>
+        <button data-toggle="smoke" id="smokeBtn" aria-pressed="false">Smoked shell</button>
+        <a class="link" id="casLink" href="chf90_viewer.html">Full cassette viewer</a>
+      </div>
+      <div class="group" role="group" aria-label="Display options" data-3d><span class="label">Show</span>
+        <button data-toggle="rotate" aria-pressed="false">Auto‑rotate</button>
+        <button data-toggle="edges" aria-pressed="true">Outlines</button>
+        <button data-toggle="pixel" aria-pressed="false">Pixel look</button>
+      </div>
+    </nav>
+    <div class="busy" id="busy" role="status" hidden><span id="busyText"></span><div class="meter"><i id="busyBar"></i></div><button id="cancelBtn">Cancel</button></div>
+    <div class="about" id="about" role="dialog" aria-labelledby="aboutTitle" tabindex="-1" hidden>
+      <svg class="sony" viewBox="0 0 1280 225.28" role="img" aria-label="Sony"><path d="__SONY_PATH__"/></svg>
+      <h2 id="aboutTitle">80th Anniversary · 3D Collection</h2>
+      <p>Eight Sony classics, from the 1955 TR-55 radio to the 2003 Cyber-shot DSC-P8, rebuilt as 3D models in real millimetres and dressed in the Sony 80th-anniversary illustration. Each one opens up to show its inside, rebuilt from service manuals and photos. Turn them, light them, play them as a showcase, or make your own GIFs.</p>
+      <div class="maker"><span class="hikaru" role="img" aria-label="Hikaru"></span><div><b>Hikaru Digital Marketing</b><span>光曜町數位行銷有限公司 · 3D models, rendering and this site · <a href="https://www.hikaru.com.tw/" target="_blank" rel="noopener">hikaru.com.tw</a></span></div></div>
+      <div class="btns">
+        <a class="link" href="./gifs/index.html">GIF gallery</a>
+        <a class="link" href="./chf90_viewer.html">Cassette viewer</a>
+        <a class="link" href="https://github.com/Hikaru-tw/sony80-3d-collection" target="_blank" rel="noopener">Source on GitHub</a>
+      </div>
+      <h3>Credits</h3>
+      <ul>
+        <li>Face art: the Sony 80th-anniversary illustration, used with permission.</li>
+        <li>Sizes and inside details from Sony's service manuals and brochures, radiomuseum.org, iFixit, Wikimedia Commons, MoDiP, the Smithsonian's National Museum of American History, walkman.land, tapedeck.org and collectors' photos.</li>
+        <li>Built with <a href="https://threejs.org/" target="_blank" rel="noopener">three.js</a> (MIT). Type: Arvo and IBM Plex (SIL Open Font License).</li>
+      </ul>
+      <p class="fine">Sony, Walkman, Trinitron, Cyber-shot and the product names are trademarks of Sony Group Corporation or its affiliates. The source code is MIT-licensed; the illustration, textures, renders and GIFs are not covered by that licence.</p>
+      <div class="btns" style="justify-content: flex-end"><button id="closeAbout">Close</button></div>
+    </div>
+    <div class="result" id="result" role="dialog" aria-labelledby="resultTitle" hidden>
+      <h2 id="resultTitle"></h2>
+      <div class="result-media" id="resultMedia"></div>
+      <p id="resultInfo"></p>
+      <div class="btns"><button id="closeResult">Close</button><a class="link primary" id="dlLink" href="#" download>Download</a></div>
+    </div>
+  </div>
+</div>
+<script>
+/*__BUNDLE__*/
+</script>
+<script>
+(function () {
+  "use strict";
+  // the 8 products of the 經典故事 section, in the event's order; models come from products/<id>.js (bundled as PRODUCTS)
+  var LIST = [
+    { id: "chf", short: "CHF 90", name: "Tape CHF 90", year: 1980, meta: "100.4 × 63.8 × 12 mm · the label art on the real shell; open it to see the reels" },
+    { id: "tps-l2", short: "TPS-L2", name: "Walkman TPS-L2", year: 1979, meta: "player 88 × 133.5 × 29 mm · with the MDR-3L2 headphones · open it to see the 1979 mechanism" },
+    { id: "wm-f5", short: "WM-F5", name: "Sports Walkman WM-F5", year: 1983, meta: "100.4 × 125.2 × 42.1 mm · open it to see the cassette, deck and radio board" },
+    { id: "d-e350", short: "D-E350", name: "CD Walkman D-E350", year: 2002, meta: "130.6 × 150.5 × 26.3 mm (its successor D-E356CK; the sticker matches) · open it to see the CD and the pickup" },
+    { id: "dsc-p8", short: "DSC-P8", name: "Cyber-shot DSC-P8", year: 2003, meta: "108 × 51.5 × 35.1 mm · open it to see the lens block, flash and board" },
+    { id: "kv-1310", short: "KV-1310", name: "Trinitron KV-1310", year: 1968, meta: "451 × 362 × 397 mm (Sony's spec for its US twin, the KV-1210U) · open it to see the Trinitron tube" },
+    { id: "mdr-cd900st", short: "MDR-CD900ST", name: "MDR-CD900ST", year: 1989, meta: "cups 72 × 83 mm, measured on face-on photos · open it to see the 40 mm drivers" },
+    { id: "tr-55", short: "TR-55", name: "TR-55", year: 1955, meta: "140 × 89 × 38 mm · open it to see the 1955 chassis" },
+  ];
+  var byId = function (id) { return LIST.filter(function (x) { return x.id === id; })[0]; };
+  var dims = function (meta) { return meta.split(" · ")[0].replace(/\s*\([^)]*\)/g, "").split(",")[0].trim(); };   // "cups 72 × 83 mm, measured…" -> "cups 72 × 83 mm"
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var $ = function (id) { return document.getElementById(id); };
+  var app = $("app"), canvas = $("c"), stage = $("stage"), readout = $("readout");
+  var nameEl = $("name"), metaEl = $("meta"), loadingEl = $("loading");
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  renderer.setClearColor(0x000000, 0);
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 30);   // near / far follow the camera's distance (frame())
+  scene.add(camera);
+  var eCam = new THREE.PerspectiveCamera(30, 1, 0.1, 30);     // the export camera (GIF / PNG): square, framed like the GIF set
+  scene.add(eCam);
+  var amb = new THREE.AmbientLight(0xffffff, 1.6); scene.add(amb);
+  // same light as the GIFs (product.html), held in the camera frame so it follows the orbit
+  var key = new THREE.DirectionalLight(0xffffff, 1.9); key.position.set(0.3, 0.7, 0.65); camera.add(key); camera.add(key.target);
+
+  // ---------- models: built on first visit, centred and scaled to one bounding sphere like the GIFs ----------
+  var state = { rotate: false, edges: true, pixel: false, smoke: false };
+  var cache = {}, models = {}, current = null, pairs = {};   // pairs: texture uuid -> its full-res / _lo twin
+  function img(src) { return new Promise(function (res, rej) { var im = new Image(); im.onload = function () { res(im); }; im.onerror = rej; im.src = src; }); }
+  function texture(im, nearest) {
+    var t = new THREE.Texture(im); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+    if (nearest) { t.magFilter = t.minFilter = THREE.NearestFilter; t.generateMipmaps = false; }
+    t.needsUpdate = true; return t;
+  }
+  function loadTex(name) {
+    return Promise.all([img(ASSETS[name]), img(ASSETS[name + "_lo"])]).then(function (ims) {
+      var hi = texture(ims[0], false), lo = texture(ims[1], true);
+      hi.userData.size = lo.userData.size = [ims[0].naturalWidth, ims[0].naturalHeight];   // mappings are in full-res sticker px
+      pairs[hi.uuid] = { hi: hi, lo: lo }; pairs[lo.uuid] = pairs[hi.uuid];
+      return hi;
+    });
+  }
+  function swapMaps(root, pixel) {   // pixel look uses the 20% stickers with nearest filtering, as in the pixel GIFs
+    root.traverse(function (o) {
+      if (!o.material) return;
+      (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (m) { var p = m.map && pairs[m.map.uuid]; if (p) m.map = pixel ? p.lo : p.hi; });
+    });
+  }
+  function build(id) {
+    if (cache[id]) return cache[id];
+    var mod = PRODUCTS[id];
+    cache[id] = Promise.all(mod.textures.map(loadTex)).then(function (texs) {
+      var T = {}; mod.textures.forEach(function (n, i) { T[n] = texs[i]; });
+      var K = makeKit(THREE, { art: texs[0] });
+      var built = mod.build(THREE, K, T, { q: null, shell: "tan" });
+      var sphere = new THREE.Box3().setFromObject(built).getBoundingSphere(new THREE.Sphere());
+      built.position.sub(sphere.center);
+      var holder = new THREE.Group(); holder.add(built); holder.scale.setScalar(0.94 / sphere.radius * (mod.fit || 1));
+      holder.visible = false; scene.add(holder);
+      // kept out of the normal pass: drawn feature lines (the Outlines toggle hides them) and parts flagged noInk (wires,
+      // printing, glowing beams), which always stay
+      var lines = [], noInk = [];
+      holder.traverse(function (o) { if (o.isLine || o.isLineSegments) lines.push(o); else if (o.userData.noInk) noInk.push(o); });
+      models[id] = { id: id, mod: mod, holder: holder, built: built, lines: lines, skip: lines.concat(noInk), ink: mod.ink == null ? 2 : mod.ink };
+      return models[id];
+    });
+    return cache[id];
+  }
+
+  // ---------- product strip ----------
+  var strip = $("strip");
+  var chips = LIST.map(function (p) {
+    var b = document.createElement("button"); b.className = "chip"; b.setAttribute("aria-pressed", "false"); b.dataset.id = p.id; b.setAttribute("aria-label", p.name + ", " + p.year);
+    b.innerHTML = '<img alt="" src="' + THUMBS[p.id] + '"><span><b></b><small></small></span>';
+    b.querySelector("b").textContent = p.short; b.querySelector("small").textContent = p.year;
+    b.addEventListener("click", function () { show(p.id); });
+    strip.appendChild(b); return b;
+  });
+  var explodeInput = $("explode"), insideGroup = $("inside"), insideBtn = $("insideBtn");
+  var openLabel = $("openLabel"), smokeBtn = $("smokeBtn"), casLink = $("casLink");
+  var explodeTween = null, explodeVal = 0, insideOn = false;
+  function setExplode(t) { explodeVal = t; explodeInput.value = String(Math.round(t * 100)); if (current && current.built.userData.setExplode) current.built.userData.setExplode(t); }
+  function animateExplode(to) { if (reduced) { explodeTween = null; setExplode(to); } else explodeTween = { from: explodeVal, to: to, t0: performance.now(), dur: 900 }; }
+  var want = null;
+  function show(id) {
+    if (EX.busy) return Promise.resolve(current);   // the export is using the scene
+    var p = byId(id) || LIST[0]; id = p.id; want = id;
+    chips.forEach(function (c) { var on = c.dataset.id === id; c.setAttribute("aria-pressed", String(on)); if (on && c.scrollIntoView) c.scrollIntoView({ block: "nearest", inline: "nearest" }); });
+    nameEl.textContent = p.name; metaEl.textContent = p.year + " · " + p.meta;
+    var capName = $("capName"); capName.textContent = "";
+    p.name.split(" ").forEach(function (w, i) { if (i) capName.appendChild(document.createTextNode(" ")); capName.appendChild(document.createElement("span")).textContent = w; });
+    $("capLine").innerHTML = "<b></b> · <span></span>";
+    $("capLine").querySelector("b").textContent = p.year; $("capLine").querySelector("span").textContent = dims(p.meta);
+    if (history.replaceState) history.replaceState(null, "", "#" + id);
+    showGif();
+    if (!cache[id] && look.mode !== "gif") loadingEl.textContent = "Building " + p.name + "…";
+    return build(id).then(function (m) {
+      if (want !== id) return m;   // a later click won
+      loadingEl.textContent = "";
+      if (current) current.holder.visible = false;
+      current = m; m.holder.visible = true;
+      swapMaps(m.holder, state.pixel); m.lines.forEach(function (l) { l.visible = state.edges; });
+      var ud = m.built.userData, opens = !!ud.setExplode;   // products that open up get the Inside controls
+      insideGroup.hidden = insideBtn.hidden = !opens;
+      openLabel.textContent = m.mod.openLabel || "Open"; smokeBtn.hidden = !ud.setShell; casLink.hidden = id !== "chf";
+      explodeTween = null; if (insideOn) { insideOn = false; markView(null); }
+      setExplode(0);   // every product starts closed
+      if (ud.setShell) ud.setShell(state.smoke ? "smoke" : "tan");
+      return m;
+    }, function (err) { loadingEl.textContent = "Could not build " + p.name + ": " + err; });
+  }
+  function step(d) { var i = LIST.findIndex(function (x) { return x.id === want; }); return show(LIST[(i + d + LIST.length) % LIST.length].id); }
+
+  // ---------- camera ----------
+  var controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = !reduced; controls.dampingFactor = 0.08;
+  controls.minDistance = 1.4; controls.maxDistance = 10; controls.autoRotateSpeed = 1.4;
+  // preset views [azimuth deg, elevation deg]; "hero" is the GIF pose (product turned 22°, tipped 12°)
+  var VIEWS = { hero: [-22, 12], front: [0, 0], right: [90, 0], back: [180, 0], left: [-90, 0], top: [0, 78], bottom: [0, -78] };
+  var viewButtons = Array.prototype.slice.call(document.querySelectorAll("[data-view]"));
+  var GIF_DIST = 4.1;   // product.html's camera distance at its 30° lens, so 1.00× here is the GIF set's framing
+  function fitDistFor(fov, aspect) {   // keep the 0.94 sphere inside the narrower of the two fields of view, with the GIFs' margin
+    var h = fov / 2 * Math.PI / 180, half = Math.min(h, Math.atan(Math.tan(h) * aspect));
+    return GIF_DIST * Math.sin(15 * Math.PI / 180) / Math.sin(half);
+  }
+  function fitDist() { return fitDistFor(camera.fov, camera.aspect); }
+  function sph(az, el, d) { var a = az * Math.PI / 180, e = el * Math.PI / 180; return new THREE.Vector3(d * Math.cos(e) * Math.sin(a), d * Math.sin(e), d * Math.cos(e) * Math.cos(a)); }
+  var activeView = null;
+  function markView(name) { activeView = name; viewButtons.forEach(function (x) { x.classList.toggle("active", x.dataset.view === name); }); }
+  function viewOf(name, m) { return name === "inside" ? (m && m.mod.insideView) || [-62, 34, 1.15] : VIEWS[name]; }
+  function placeCam(az, el, f) {   // jump straight there, round the model's centre
+    var damp = controls.enableDamping;
+    controls.enableDamping = false; controls.update(); controls.enableDamping = damp;   // drop leftover drag momentum
+    controls.target.set(0, 0, 0); camera.position.copy(sph(az, el, fitDist() * f)); controls.update();
+    if (play.on) { play.base = { az: az, el: el }; play.amp = 0; play.held = false; play.releaseAt = 0; }   // the loop now centres here
+  }
+  function placeView(name) { var v = viewOf(name, current); placeCam(v[0], v[1], name === "inside" ? v[2] || 1.15 : 1); }
+  function goTo(name) {
+    if (name === "inside" && insideOn) name = "hero";   // a second click on Inside closes it again
+    placeView(name);
+    if (name === "inside") { insideOn = true; animateExplode(1); }
+    else if (insideOn) { insideOn = false; animateExplode(0); }   // leaving Inside closes what it opened
+    markView(name);
+  }
+  viewButtons.forEach(function (b) { b.addEventListener("click", function () { goTo(b.dataset.view); }); });
+  controls.addEventListener("start", function () {
+    markView(insideOn ? "inside" : null);   // Inside stays lit while it is open
+    if (play.on) { play.held = true; play.releaseAt = 0; }   // the loop waits while the model is handled
+  });
+  controls.addEventListener("end", function () { if (play.on && play.held) play.releaseAt = performance.now() + (controls.enableDamping ? 450 : 0); });
+
+  explodeInput.addEventListener("input", function () {
+    explodeTween = null; setExplode(explodeInput.valueAsNumber / 100);
+    if (insideOn) { insideOn = false; insideBtn.classList.remove("active"); }
+  });
+  var rotateBtn = document.querySelector('[data-toggle="rotate"]');
+  function setRotate(on) { state.rotate = on; controls.autoRotate = on; rotateBtn.setAttribute("aria-pressed", String(on)); if (on) { markView(null); stopPlay(); } }
+  document.querySelectorAll("[data-toggle]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var k = b.dataset.toggle;
+      if (k === "rotate") return setRotate(!state.rotate);
+      state[k] = !state[k]; b.setAttribute("aria-pressed", String(state[k]));
+      if (k === "edges" && current) current.lines.forEach(function (l) { l.visible = state.edges; });
+      if (k === "smoke" && current && current.built.userData.setShell) current.built.userData.setShell(state.smoke ? "smoke" : "tan");
+      if (k === "pixel") { inkMat.uniforms.soft.value = state.pixel ? 0 : 1; canvas.classList.toggle("pixel", state.pixel); if (current) swapMaps(current.holder, state.pixel); makeColorTarget(); resize(); }
+    });
+  });
+  var KEYVIEWS = { "1": "hero", "2": "front", "3": "right", "4": "back", "5": "left", "6": "top", "7": "bottom" };
+  window.addEventListener("keydown", function (e) {
+    if (e.altKey || e.ctrlKey || e.metaKey || (e.target && e.target.tagName === "INPUT")) return;
+    var k = e.key;
+    if (k === "Escape") { if (!about.hidden) closeAbout(); else if (!result.hidden) closeResult(); else if (sc.on) exitShowcase(); return; }
+    if (EX.busy) return;   // keys wait while a GIF is being made
+    if (k === "ArrowRight" || k === "ArrowLeft") { var d = k === "ArrowRight" ? 1 : -1; if (sc.on) advance(d); else step(d); e.preventDefault(); }
+    else if (k === "s" || k === "S") toggleShowcase();
+    else if (k === "p" || k === "P") togglePlay();
+    else if (k === "f" || k === "F") toggleFull();
+    else if (sc.on && (k === "g" || k === "G")) setMode(look.mode === "gif" ? "3d" : "gif");
+    else if (k === "+" || k === "=") zoomBy(1.25);
+    else if (k === "-" || k === "_") zoomBy(1 / 1.25);
+    else if (sc.on) return;   // the rest belong to the normal view
+    else if (KEYVIEWS[k]) goTo(KEYVIEWS[k]);
+    else if ((k === "i" || k === "I") && !insideBtn.hidden) goTo("inside");
+    else if (k === "r" || k === "R") resetView();
+    else if (k === "c" || k === "C") togglePanel();
+    else if (k === "g" || k === "G") setMode(look.mode === "gif" ? "3d" : "gif");
+  });
+
+  // ---------- ink pass (as in product.html): colour + (normal, depth) targets, edges where depth jumps or normals turn ----------
+  var QUAD_VS = "varying vec2 vUv; void main() { vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }";
+  var INK_FS = [
+    "uniform sampler2D tColor, tNormal, tDepth; uniform vec2 texel, uvScale, uvMax; uniform float width, near, far, enabled, soft, tanHalf, aspect; uniform vec3 ink;",
+    "varying vec2 vUv;",
+    "vec2 P;",   // this pixel in the targets (the passes may use only a corner of them: see inkFit)
+    "vec2 cl(vec2 q) { return clamp(q, 0.5 * texel, uvMax); }",
+    "float lin(float d) { float z = d * 2.0 - 1.0; return 2.0 * near * far / (far + near - z * (far - near)); }",
+    "vec3 ray(vec2 q) { vec2 uv = q / uvScale; return vec3((uv.x * 2.0 - 1.0) * tanHalf * aspect, (uv.y * 2.0 - 1.0) * tanHalf, -1.0); }",   // view ray, z = -1
+    "float edgeAt(vec2 o, vec4 n0, float d0) {",
+    "  vec4 n1 = texture2D(tNormal, cl(P + o)); float d1 = lin(texture2D(tDepth, cl(P + o)).r);",
+    "  if (abs(n0.a - n1.a) > 0.5) return 1.0;",
+    "  if (enabled > 1.2 && n0.a > 0.5) {",                                      // one part in front of another, measured against the
+    "    vec4 n2 = texture2D(tNormal, cl(P - o)); float d2 = lin(texture2D(tDepth, cl(P - o)).r);",   // face's own depth there (extrapolated
+    "    bool flat2 = n2.a > 0.5 && dot(n0.rgb * 2.0 - 1.0, n2.rgb * 2.0 - 1.0) > 0.995;",       // from the opposite neighbour; 1/z is
+    "    float pred = flat2 ? 1.0 / max(2.0 / d0 - 1.0 / d2, 1e-4) : d0;",                       // linear on screen), so a face seen
+    "    vec3 nv = normalize(n0.rgb * 2.0 - 1.0); float dn = dot(nv, ray(P + o));",          // edge-on doesn't ink itself; and its own
+    "    float predN = abs(dn) > 1e-4 ? dot(nv, ray(P) * d0) / dn : d0;",                       // plane (view normal) carried to the
+    "    if (min(abs(d1 - pred), abs(d1 - predN)) > 0.02 * min(d0, d1)) return 1.0;",            // neighbour's ray, which holds across creases
+    "  }",
+    "  if (enabled > 1.8 && n0.a > 0.5 && dot(n0.rgb * 2.0 - 1.0, n1.rgb * 2.0 - 1.0) < 0.3) return 1.0;",
+    "  return 0.0;",
+    "}",
+    "void main() {",
+    "  P = vUv * uvScale;",
+    "  vec4 n0 = texture2D(tNormal, P);",
+    "  float d0 = lin(texture2D(tDepth, P).r), e = 0.0, steps = min(width, 4.0);",
+    "  if (enabled > 0.5) {",
+    "    for (int r = 1; r <= 4; r++) {",            // up to 4 rings; wider lines spread the rings out
+    "      if (float(r) > steps + 0.01) break;",
+    "      for (int i = 0; i < 8; i++) e = max(e, edgeAt(vec2(cos(float(i) * 0.7853982), sin(float(i) * 0.7853982)) * (float(r) * width / steps) * texel, n0, d0));",
+    "    }",
+    "    if (soft > 0.5 && e < 0.5) for (int i = 0; i < 8; i++) e = max(e, 0.5 * edgeAt(vec2(cos(float(i) * 0.7853982), sin(float(i) * 0.7853982)) * (width + 1.0) * texel, n0, d0));",
+    "  }",
+    "  gl_FragColor = vec4(e, 0.0, 0.0, 1.0);",
+    "}"].join("\n");
+  function inkMaterial(rtN) {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        tColor: { value: null }, tNormal: { value: rtN.texture }, tDepth: { value: rtN.depthTexture },
+        texel: { value: new THREE.Vector2() }, width: { value: 1 }, ink: { value: new THREE.Color(0x211714) },
+        near: { value: 0.1 }, far: { value: 30 }, enabled: { value: 2 }, soft: { value: 1 },
+        tanHalf: { value: Math.tan(15 * Math.PI / 180) }, aspect: { value: 1 }, uvScale: { value: new THREE.Vector2(1, 1) }, uvMax: { value: new THREE.Vector2(1, 1) },
+      },
+      vertexShader: QUAD_VS, fragmentShader: INK_FS, depthTest: false, depthWrite: false,
+    });
+  }
+  // clean-up (as in product.html's composite): ink without specks. A real line is 2+ px thick and runs on, so it has 6+
+  // full-ink pixels in a 5 x 5 window even at its end; a pixel with 5 or fewer is a speck and is dropped with its half-tone
+  function cleanMaterial(rtM) {
+    return new THREE.ShaderMaterial({
+      uniforms: { tMask: { value: rtM.texture }, texel: { value: new THREE.Vector2() }, uvScale: { value: new THREE.Vector2(1, 1) }, uvMax: { value: new THREE.Vector2(1, 1) } },
+      vertexShader: QUAD_VS,
+      fragmentShader: [
+        "uniform sampler2D tMask; uniform vec2 texel, uvScale, uvMax; varying vec2 vUv;",
+        "void main() {",
+        "  vec2 P = vUv * uvScale; float e = texture2D(tMask, P).r;",
+        "  if (e > 0.01) {",
+        "    float n = 0.0;",
+        "    for (int j = -2; j <= 2; j++) for (int i = -2; i <= 2; i++) n += step(0.99, texture2D(tMask, clamp(P + vec2(float(i), float(j)) * texel, 0.5 * texel, uvMax)).r);",
+        "    if (n < 5.5) e = 0.0;",
+        "  }",
+        "  gl_FragColor = vec4(e, 0.0, 0.0, 1.0);",
+        "}"].join("\n"),
+      depthTest: false, depthWrite: false,
+    });
+  }
+  // composite: colour + the cleaned ink, scaled up from the corner the passes used (bilinear, then sharpened back into a
+  // crisp edge) when zoomed in. The export copy writes sRGB itself: three only converts on the way to the canvas, not
+  // into a render target
+  function compMaterial(rtC, toSRGB) {
+    return new THREE.ShaderMaterial({
+      uniforms: { tColor: { value: null }, tMask: { value: rtC.texture }, texel: { value: new THREE.Vector2() }, ink: { value: new THREE.Color(0x211714) },
+                  uvScale: { value: new THREE.Vector2(1, 1) }, uvMax: { value: new THREE.Vector2(1, 1) }, sharp: { value: 0 } },
+      vertexShader: QUAD_VS,
+      fragmentShader: [
+        "uniform sampler2D tColor, tMask; uniform vec2 texel, uvScale, uvMax; uniform float sharp; uniform vec3 ink; varying vec2 vUv;",
+        "void main() {",
+        "  vec2 q = clamp(vUv * uvScale, 0.5 * texel, uvMax);",
+        "  if (sharp < 0.5) q = (floor(q / texel) + 0.5) * texel;",   // 1.00x: this pixel exactly, no filtering at all
+        "  vec4 c = texture2D(tColor, vUv); float e = texture2D(tMask, q).r;",
+        "  if (sharp > 0.5) e = smoothstep(0.3, 0.7, e);",
+        "  gl_FragColor = " + (toSRGB ? "sRGBTransferOETF" : "linearToOutputTexel") + "(mix(c, vec4(ink, 1.0), e));",
+        "}"].join("\n"),
+      depthTest: false, depthWrite: false,
+    });
+  }
+  // Zoom-aware ink. Zoomed in by z, the normal, ink and clean-up passes run on a 1/z-size corner of their targets and the
+  // composite scales that back up, so outlines and small details grow with the drawing, like a close-up of the 1.00x
+  // picture (and as the illustration's own lines do), instead of staying a fixed few pixels; capped at 2.5x. Zoomed out,
+  // the lines just get thinner. At 1.00x every pass covers its whole target and the result is unchanged (and matches the
+  // GIF pipeline). Returns the line width in target pixels.
+  var INK_ZOOM_MAX = 2.5;
+  function inkFit(z, W, H, base, rts, mats, comp) {
+    var s = Math.min(INK_ZOOM_MAX, Math.max(1, z)), vw = Math.max(1, Math.round(W / s)), vh = Math.max(1, Math.round(H / s));
+    rts.forEach(function (t) { t.viewport.set(0, 0, vw, vh); });
+    mats.forEach(function (m) { m.uniforms.uvScale.value.set(vw / W, vh / H); m.uniforms.uvMax.value.set((vw - 0.5) / W, (vh - 0.5) / H); });
+    comp.uniforms.sharp.value = vw < W ? 1 : 0;
+    return z < 1 ? Math.max(1, Math.round(base * Math.max(z, 0.5))) : base;
+  }
+  function quad(mat) { var s = new THREE.Scene(); s.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), mat)); return s; }
+  function hideFor(list, fn) {   // run fn with these objects hidden, then give each its own visibility back
+    var vis = list.map(function (o) { var v = o.visible; o.visible = false; return v; });
+    fn(); list.forEach(function (o, i) { o.visible = vis[i]; });
+  }
+  var rtColor = null;
+  var rtNormal = new THREE.WebGLRenderTarget(1, 1, { depthTexture: new THREE.DepthTexture(1, 1) });
+  var rtMask = new THREE.WebGLRenderTarget(1, 1, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter });   // ink amount per pixel
+  var rtClean = new THREE.WebGLRenderTarget(1, 1);   // the same without specks; bilinear, for the scale-up when zoomed in
+  var normalMat = new THREE.MeshNormalMaterial();
+  var inkMat = inkMaterial(rtNormal), cleanMat = cleanMaterial(rtMask), compMat = compMaterial(rtClean, false);
+  var quadScene = quad(inkMat), cleanScene = quad(cleanMat), compScene = quad(compMat), lineBase = 1;
+  var quadCam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  var buf = new THREE.Vector2();
+  function makeColorTarget() {   // multisampled for the smooth look, hard pixels for the pixel look (like the pixel GIFs)
+    if (rtColor) rtColor.dispose();
+    rtColor = new THREE.WebGLRenderTarget(Math.max(1, buf.x), Math.max(1, buf.y), { type: THREE.HalfFloatType, samples: state.pixel ? 0 : 4 });
+    inkMat.uniforms.tColor.value = rtColor.texture; compMat.uniforms.tColor.value = rtColor.texture;
+  }
+  function resize() {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setPixelRatio(state.pixel ? 0.25 : Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix(); inkMat.uniforms.aspect.value = camera.aspect;
+    renderer.getDrawingBufferSize(buf);
+    rtColor.setSize(buf.x, buf.y); rtNormal.setSize(buf.x, buf.y); rtMask.setSize(buf.x, buf.y); rtClean.setSize(buf.x, buf.y);
+    [inkMat, cleanMat, compMat].forEach(function (m) { m.uniforms.texel.value.set(1 / buf.x, 1 / buf.y); });
+    applyLine(); updateLimits();
+    if (activeView) placeView(activeView);   // a preset re-fits to the new shape (phone rotation, fullscreen, showcase)
+    updateGuide();
+  }
+
+  // ---------- Adjust panel ----------
+  // Light, look, motion and export settings are remembered in this browser (localStorage, best effort); the camera is not
+  var MOTIONS = { sway: 23, turn: 36, open: 40 };   // frames per loop; sway is the GIF set's (product.html renderWobble)
+  var DEF = { lightAz: 24.8, lightEl: 44.4, key: 1.9, amb: 1.6, bg: "white", line: 1, spin: 1.4,   // the GIFs' light: key at (0.3, 0.7, 0.65) in the camera frame
+              tab: "view", motion: "sway", frames: 23, delay: 100, every: 8, caption: true, size: 500, style: "smooth", gground: "clear", mode: "3d", gifStyle: "pixel" };
+  var CHOICES = { tab: ["view", "light", "motion", "export"], motion: ["sway", "turn", "open"], every: [0, 8, 15, 30], size: [250, 500, 1000], style: ["pixel", "smooth"], gground: ["clear", "ground"],
+                  mode: ["3d", "gif"], gifStyle: ["pixel", "smooth"] };
+  var look = {}; Object.keys(DEF).forEach(function (k) { look[k] = DEF[k]; });
+  try {
+    var saved = JSON.parse(localStorage.getItem("sony80viewer.look") || "null");
+    if (saved) Object.keys(DEF).forEach(function (k) { if (typeof saved[k] === typeof DEF[k] && (!CHOICES[k] || CHOICES[k].indexOf(saved[k]) >= 0)) look[k] = saved[k]; });
+  } catch (e) { /* no storage: defaults */ }
+  function saveLook() { try { localStorage.setItem("sony80viewer.look", JSON.stringify(look)); } catch (e) { /* not kept */ } }
+  var panel = $("panel"), adjustBtn = $("adjustBtn");
+  function togglePanel() { panel.hidden = !panel.hidden; adjustBtn.setAttribute("aria-expanded", String(!panel.hidden)); adjustBtn.classList.toggle("active", !panel.hidden); updateGuide(); }
+  adjustBtn.addEventListener("click", togglePanel);
+  // tabs
+  var TABS = CHOICES.tab;
+  function setTab(t) {
+    look.tab = t;
+    TABS.forEach(function (x) { var b = $("tab-" + x), on = x === t; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; $("pane-" + x).hidden = !on; });
+    updateGuide(); saveLook();
+  }
+  TABS.forEach(function (x, i) {
+    var b = $("tab-" + x);
+    b.addEventListener("click", function () { setTab(x); });
+    b.addEventListener("keydown", function (e) {   // arrow keys move between tabs (and not between products)
+      var d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (!d) return;
+      e.preventDefault(); e.stopPropagation(); var n = TABS[(i + d + TABS.length) % TABS.length]; setTab(n); $("tab-" + n).focus();
+    });
+  });
+  function seg(id, items, get, set) {   // a row of buttons, one pressed: items [[value, label, title]]
+    var host = $(id), bs = items.map(function (it) {
+      var b = document.createElement("button"); b.textContent = it[1]; if (it[2]) b.title = it[2];
+      b.addEventListener("click", function () { set(it[0]); sync(); }); host.appendChild(b); return b;
+    });
+    function sync() { bs.forEach(function (b, i) { b.setAttribute("aria-pressed", String(items[i][0] === get())); }); }
+    sync(); return { sync: sync };
+  }
+  function bind(id, fmt, get, set) {   // a slider with its read-out
+    var inp = $(id), out = $(id + "Out");
+    function show() { out.textContent = fmt(get()); }
+    inp.value = String(get()); show();
+    inp.addEventListener("input", function () { set(inp.valueAsNumber); show(); });
+    return { inp: inp, sync: function () { if (document.activeElement !== inp) inp.value = String(get()); show(); } };
+  }
+  function applyLine() { lineBase = Math.min(8, Math.max(1, Math.round(buf.y / 280 * look.line))); }   // the GIFs' 2 px at 500 px, scaled to the canvas, times the Outline setting (at 1.00x)
+  // light
+  var LIGHTS = [["Default", 24.8, 44.4, 1.9, 1.6, "The GIF set's light"], ["Top", 0, 80, 2.1, 1.3, "From above"], ["Side", 72, 10, 2.4, 1.1, "Low, from the right"],
+                ["Back", 160, 35, 2.6, 1.5, "Rim light from behind"], ["Flat", 24.8, 44.4, 0.5, 2.6, "Even, almost no shading"]];
+  var presetBtns = [];
+  function applyLight() {
+    var a = look.lightAz * Math.PI / 180, e = look.lightEl * Math.PI / 180;
+    key.position.set(Math.sin(a) * Math.cos(e), Math.sin(e), Math.cos(a) * Math.cos(e)); key.intensity = look.key; amb.intensity = look.amb;
+    presetBtns.forEach(function (b, i) { var L = LIGHTS[i]; b.setAttribute("aria-pressed", String(L[1] === look.lightAz && L[2] === look.lightEl && L[3] === look.key && L[4] === look.amb)); });
+  }
+  presetBtns = LIGHTS.map(function (L) {
+    var b = document.createElement("button"); b.textContent = L[0]; b.title = L[5];
+    b.addEventListener("click", function () { look.lightAz = L[1]; look.lightEl = L[2]; look.key = L[3]; look.amb = L[4]; applyLight(); saveLook(); lookSliders.forEach(function (s) { s.sync(); }); });
+    $("lightPresets").appendChild(b); return b;
+  });
+  // ground
+  var GROUNDS = [["white", "#FFFFFF", "White"], ["warm", "#F3EEE6", "Warm paper"], ["grey", "#8E8983", "Grey"], ["dark", "#1F1B1A", "Dark"], ["clear", "", "Transparent (checkerboard)"]];
+  var groundOf = function () { return GROUNDS.filter(function (x) { return x[0] === look.bg; })[0] || GROUNDS[0]; };
+  var swatchBtns = GROUNDS.map(function (g) {
+    var b = document.createElement("button"); b.className = "swatch" + (g[0] === "clear" ? " clear" : ""); b.style.setProperty("--sw", g[1] || "#FFFFFF");
+    b.setAttribute("aria-label", g[2]); b.title = g[2]; b.dataset.bg = g[0];
+    b.addEventListener("click", function () { look.bg = g[0]; applyBg(); saveLook(); });
+    $("swatches").appendChild(b); return b;
+  });
+  function applyBg() {
+    var g = groundOf();
+    stage.style.backgroundColor = g[1] || ""; stage.classList.toggle("bg-clear", g[0] === "clear"); stage.classList.toggle("on-dark", g[0] === "dark" || g[0] === "grey");
+    swatchBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.bg === g[0])); });
+  }
+  var lookSliders = [
+    bind("lightAz", function (v) { return Math.round(v) + "°"; }, function () { return look.lightAz; }, function (v) { look.lightAz = v; applyLight(); saveLook(); }),
+    bind("lightEl", function (v) { return Math.round(v) + "°"; }, function () { return look.lightEl; }, function (v) { look.lightEl = v; applyLight(); saveLook(); }),
+    bind("keyI", function (v) { return v.toFixed(2); }, function () { return look.key; }, function (v) { look.key = v; applyLight(); saveLook(); }),
+    bind("ambI", function (v) { return v.toFixed(2); }, function () { return look.amb; }, function (v) { look.amb = v; applyLight(); saveLook(); }),
+    bind("lineW", function (v) { return v.toFixed(1) + "×"; }, function () { return look.line; }, function (v) { look.line = v; applyLine(); saveLook(); }),
+    bind("spin", function (v) { return v.toFixed(1); }, function () { return look.spin; }, function (v) { look.spin = v; controls.autoRotateSpeed = v; saveLook(); }),
+  ];
+  // zoom: 1x is the presets' framing (fitDist); the slider is logarithmic, 0.45x .. 4.5x, and follows the scroll wheel
+  function camDist() { return camera.position.distanceTo(controls.target); }
+  function setDist(d) { var dir = camera.position.clone().sub(controls.target).normalize(); camera.position.copy(controls.target).addScaledVector(dir, d); controls.update(); }
+  function updateLimits() { controls.minDistance = fitDist() / 4.6; controls.maxDistance = fitDist() / 0.44; }
+  function zoomBy(f) { setDist(Math.min(controls.maxDistance, Math.max(controls.minDistance, camDist() / f))); markView(insideOn ? "inside" : null); }
+  var zoomSlider = bind("zoom", function (s) { return (0.45 * Math.pow(10, s / 100)).toFixed(2) + "×"; },
+    function () { var d = camDist(); return d > 0 ? Math.round(Math.log10(fitDist() / d / 0.45) * 200) / 2 : 50; },
+    function (s) { setDist(fitDist() / (0.45 * Math.pow(10, s / 100))); markView(insideOn ? "inside" : null); });
+  // lens: a dolly zoom, so the product keeps its size on screen as the angle narrows towards a flat, near-orthographic look
+  function setFov(f) {
+    var d = camDist() * Math.tan(camera.fov * Math.PI / 360) / Math.tan(f * Math.PI / 360);
+    camera.fov = f; camera.updateProjectionMatrix(); inkMat.uniforms.tanHalf.value = Math.tan(f * Math.PI / 360);
+    updateLimits(); setDist(d);
+  }
+  var fovSlider = bind("fov", function (v) { return Math.round(v) + "°"; }, function () { return camera.fov; }, setFov);
+  function resetView() { if (camera.fov !== 30) setFov(30); goTo("hero"); fovSlider.sync(); zoomSlider.sync(); }
+  $("resetView").addEventListener("click", resetView);
+  // fullscreen: the whole viewer (bar, strip, stage); hidden where the browser has no API for it
+  var fullBtn = $("fullBtn");
+  var canFull = !!(app.requestFullscreen || app.webkitRequestFullscreen);
+  function isFull() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+  function toggleFull() {
+    if (!canFull) return;
+    if (isFull()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    else (app.requestFullscreen || app.webkitRequestFullscreen).call(app);
+  }
+  fullBtn.hidden = !canFull; fullBtn.addEventListener("click", toggleFull);
+  ["fullscreenchange", "webkitfullscreenchange"].forEach(function (ev) { document.addEventListener(ev, function () { fullBtn.setAttribute("aria-pressed", String(isFull())); }); });
+
+  // ---------- motion: one loop (sway / turntable / open up) that plays live, runs the showcase and makes the GIFs ----------
+  var play = { on: false, phase: 0, amp: 0, base: null, held: false, releaseAt: 0, wrapped: false };
+  var playBtn = $("playBtn");
+  function period() { return look.frames * look.delay; }
+  function ease(x) { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); }
+  function openAt(t) { return t < 0.5 ? ease((t - 0.12) / 0.33) : 1 - ease((t - 0.62) / 0.33); }   // closed, opens, holds, closes
+  function motionAt(kind, t, amp) {   // at loop phase t (0..1): [azimuth offset, elevation offset, explode or null]
+    var p = 2 * Math.PI * t;
+    if (kind === "turn") return [-360 * t, 0, null];
+    if (kind === "open") return [-4.5 * Math.sin(p) * amp, -4 * Math.cos(p) * amp, openAt(t)];
+    return [-9 * Math.sin(p) * amp, -8 * Math.cos(p) * amp, null];   // the GIF set's sway: product.html turns the model 22° ± 9 and tips it 12° ∓ 8
+  }
+  function liveSpec() {   // the live camera: azimuth, elevation, zoom (× the presets' framing), target, lens
+    var off = camera.position.clone().sub(controls.target), d = off.length();
+    return { az: Math.atan2(off.x, off.z) * 180 / Math.PI, el: Math.asin(Math.max(-1, Math.min(1, off.y / d))) * 180 / Math.PI, zoom: fitDist() / d, target: controls.target.clone(), fov: camera.fov };
+  }
+  function startPlay() {
+    if (state.rotate) setRotate(false);
+    var s = liveSpec();
+    play.on = true; play.amp = 0; play.held = false; play.releaseAt = 0; play.base = { az: s.az, el: s.el };   // the amplitude grows from 0, so nothing jumps
+    play.phase = look.motion === "open" && explodeVal > 0.5 ? 0.5 : 0;   // already open: carry on from the open hold
+    if (look.motion === "open") insideOn = false;
+    playBtn.setAttribute("aria-pressed", "true"); playBtn.textContent = "Stop loop";
+  }
+  function stopPlay() { play.on = false; playBtn.setAttribute("aria-pressed", "false"); playBtn.textContent = "Play loop"; }
+  function togglePlay() { if (play.on) stopPlay(); else startPlay(); }
+  playBtn.addEventListener("click", togglePlay);
+  function applyPlay() {
+    var o = motionAt(look.motion, play.phase, play.amp), t = controls.target, d = camDist();   // the distance first: zoom stays the user's
+    camera.position.copy(t).add(sph(play.base.az + o[0], Math.max(-89, Math.min(89, play.base.el + o[1])), d)); camera.lookAt(t);
+    if (o[2] != null && current && current.built.userData.setExplode) { explodeTween = null; setExplode(o[2]); }
+  }
+  function loopText() { $("loopLen").textContent = (period() / 1000).toFixed(1) + " s loop"; }
+  var framesSlider = bind("frames", function (v) { return String(Math.round(v)); }, function () { return look.frames; }, function (v) { look.frames = Math.round(v); loopText(); saveLook(); });
+  bind("delay", function (v) { return Math.round(v) + " ms"; }, function () { return look.delay; }, function (v) { look.delay = Math.round(v); loopText(); saveLook(); });
+  seg("motionSeg", [["sway", "Sway", "The GIF set's sway"], ["turn", "Turntable", "One full turn"], ["open", "Open up", "Opens and closes"]],
+    function () { return look.motion; },
+    function (v) {
+      var was = look.motion; look.motion = v; look.frames = MOTIONS[v]; framesSlider.sync(); loopText(); saveLook();
+      if (was === "open" && v !== "open" && explodeVal > 0) animateExplode(0);
+      if (play.on) startPlay();
+    });
+
+  // ---------- showcase: the stage alone, playing the loop, stepping through the 8 ----------
+  var sc = { on: false, ownPlay: false, slot: 0, fading: false, idle: null };
+  var exitBtn = $("exitBtn"), caption = $("caption"), progress = $("progress"), progressBar = $("progressBar");
+  seg("everySeg", [[0, "Off", "Stay on one product"], [8, "8 s"], [15, "15 s"], [30, "30 s"]], function () { return look.every; },
+    function (v) { look.every = v; progress.hidden = !(sc.on && v); saveLook(); });
+  var capChk = $("capChk"); capChk.checked = look.caption;
+  capChk.addEventListener("change", function () { look.caption = capChk.checked; caption.hidden = !(sc.on && look.caption); saveLook(); });
+  function stageView() {   // each product's opening shot: the 3/4 view closed, or its inside view for Open up
+    explodeTween = null; insideOn = false;
+    if (look.motion === "open") { placeView("inside"); markView(null); }
+    else { setExplode(0); placeView("hero"); markView("hero"); }
+    play.phase = 0; play.amp = 0; sc.slot = 0;
+  }
+  function prebuildNext() { setTimeout(function () { if (!sc.on) return; var i = LIST.findIndex(function (x) { return x.id === want; }); build(LIST[(i + 1) % LIST.length].id); }, 1500); }
+  function poke() {   // the exit button and cursor show on a move and hide after a while
+    if (!sc.on) return;
+    exitBtn.hidden = false; app.classList.remove("idle"); clearTimeout(sc.idle);
+    sc.idle = setTimeout(function () { if (sc.on) { exitBtn.hidden = true; app.classList.add("idle"); } }, 2500);
+  }
+  function enterShowcase() {
+    if (sc.on || EX.busy) return;
+    closeResult(); closeAbout(); sc.on = true; app.classList.add("showcase"); $("scCredit").hidden = false;
+    caption.hidden = !look.caption; progress.hidden = !look.every; progressBar.style.width = "0";
+    sc.ownPlay = !play.on; if (!play.on && look.mode !== "gif") startPlay();
+    stageView(); canvas.focus(); poke(); prebuildNext(); updateGuide();
+  }
+  function exitShowcase() {
+    if (!sc.on) return;
+    sc.on = false; app.classList.remove("showcase", "idle"); caption.hidden = progress.hidden = exitBtn.hidden = $("scCredit").hidden = true;
+    clearTimeout(sc.idle); stage.classList.remove("fading"); sc.fading = false;
+    if (sc.ownPlay) stopPlay();
+    updateGuide();
+  }
+  function toggleShowcase() { if (sc.on) exitShowcase(); else enterShowcase(); }
+  function advance(d) {
+    if (sc.fading) return;
+    sc.fading = true;
+    var swap = function () { step(d).then(function () { stageView(); stage.classList.remove("fading"); sc.fading = false; prebuildNext(); }); };
+    if (reduced) swap(); else { stage.classList.add("fading"); setTimeout(swap, 360); }
+  }
+  $("showBtn").addEventListener("click", enterShowcase);
+  $("startShow").addEventListener("click", enterShowcase);
+  exitBtn.addEventListener("click", exitShowcase);
+  stage.addEventListener("pointermove", poke); stage.addEventListener("pointerdown", poke);
+
+  // ---------- export: the same passes at a fixed square size into their own targets, read back, encoded here ----------
+  var EX = { busy: false, cancel: false }, CANCEL = {};
+  var eNormal = new THREE.WebGLRenderTarget(1, 1, { depthTexture: new THREE.DepthTexture(1, 1) });
+  var eColor = new THREE.WebGLRenderTarget(1, 1, { type: THREE.HalfFloatType });   // no MSAA, as product.html: smooth = 2x supersampled
+  var eMask = new THREE.WebGLRenderTarget(1, 1, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter });
+  var eClean = new THREE.WebGLRenderTarget(1, 1);
+  var eOut = new THREE.WebGLRenderTarget(1, 1, { minFilter: THREE.NearestFilter, magFilter: THREE.NearestFilter });
+  var eInk = inkMaterial(eNormal), eCleanMat = cleanMaterial(eMask), eComp = compMaterial(eClean, true);
+  eInk.uniforms.tColor.value = eColor.texture; eComp.uniforms.tColor.value = eColor.texture;
+  var eInkScene = quad(eInk), eCleanScene = quad(eCleanMat), eCompScene = quad(eComp), eRes = 0;
+  sizeSegs();
+  function sizeSegs() {
+    seg("sizeSeg", [[250, "250"], [500, "500", "The GIF set's size"], [1000, "1000"]], function () { return look.size; }, function (v) { look.size = v; saveLook(); });
+    seg("styleSeg", [["pixel", "Pixel", "Half-size render, doubled with hard pixels (the pixel GIFs)"], ["smooth", "Smooth", "Double-size render, scaled down (the smooth GIFs)"]], function () { return look.style; }, function (v) { look.style = v; saveLook(); });
+    seg("groundSeg", [["clear", "Clear", "Transparent, like the GIF set"], ["ground", "Ground", "On the ground colour from View"]], function () { return look.gground; }, function (v) { look.gground = v; saveLook(); });
+  }
+  var guide = $("guide");
+  function updateGuide() {
+    var on = !panel.hidden && look.tab === "export" && !sc.on && look.mode !== "gif"; guide.hidden = !on; if (!on) return;
+    var w = stage.clientWidth, h = stage.clientHeight, s = Math.min(w, h);
+    guide.style.width = guide.style.height = s + "px"; guide.style.left = (w - s) / 2 + "px"; guide.style.top = (h - s) / 2 + "px";
+  }
+  function shoot(m, v, res, pixel, out) {   // v: { az, el, zoom, target, fov } -> out: res² RGBA, GL rows (bottom up), premultiplied sRGB
+    if (res !== eRes) { [eColor, eNormal, eMask, eClean, eOut].forEach(function (t) { t.setSize(res, res); }); eRes = res; }
+    eCam.fov = v.fov; eCam.aspect = 1; eCam.up.set(0, 1, 0);
+    eCam.position.copy(v.target).add(sph(v.az, Math.max(-89, Math.min(89, v.el)), fitDistFor(v.fov, 1) / v.zoom)); eCam.lookAt(v.target);
+    var d0 = eCam.position.length(); eCam.near = Math.max(0.02, (d0 - 3) * 0.9); eCam.far = d0 + 4; eCam.updateProjectionMatrix();
+    var u = eInk.uniforms;
+    [eInk, eCleanMat, eComp].forEach(function (m) { m.uniforms.texel.value.set(1 / res, 1 / res); });
+    u.width.value = inkFit(pixel ? Math.min(1, v.zoom) : v.zoom, res, res, Math.min(12, Math.max(1, Math.round(res / 250 * look.line))),   // product.html: 1 px per 250 px of render
+                           [eNormal, eMask, eClean], [eInk, eCleanMat, eComp], eComp);
+    u.near.value = eCam.near; u.far.value = eCam.far; u.tanHalf.value = Math.tan(v.fov * Math.PI / 360); u.aspect.value = 1;
+    u.enabled.value = state.edges ? m.ink : 0; u.soft.value = pixel ? 0 : 1;
+    renderer.setRenderTarget(eColor); renderer.clear(); renderer.render(scene, eCam);
+    hideFor(m.skip, function () { scene.overrideMaterial = normalMat; renderer.setRenderTarget(eNormal); renderer.clear(); renderer.render(scene, eCam); scene.overrideMaterial = null; });
+    renderer.setRenderTarget(eMask); renderer.clear(); renderer.render(eInkScene, quadCam);
+    renderer.setRenderTarget(eClean); renderer.clear(); renderer.render(eCleanScene, quadCam);
+    renderer.setRenderTarget(eOut); renderer.clear(); renderer.render(eCompScene, quadCam);
+    renderer.readRenderTargetPixels(eOut, 0, 0, res, res, out);
+    renderer.setRenderTarget(null);
+  }
+  function stageFor(m, pixel) {   // only m in the scene, in the export's texture style, lit from the export camera
+    Object.keys(models).forEach(function (id) { models[id].holder.visible = models[id] === m; });
+    swapMaps(m.holder, pixel); m.lines.forEach(function (l) { l.visible = state.edges; });
+    if (m.built.userData.setShell) m.built.userData.setShell(state.smoke ? "smoke" : "tan");
+    eCam.add(key); eCam.add(key.target);
+  }
+  function unstage() {
+    Object.keys(models).forEach(function (id) {
+      var x = models[id]; x.holder.visible = x === current; swapMaps(x.holder, state.pixel);
+      if (x !== current && x.built.userData.setExplode) x.built.userData.setExplode(0);
+    });
+    if (current) setExplode(explodeVal);
+    camera.add(key); camera.add(key.target);
+  }
+  // 2:1 Lanczos-3 (what make_gifs.py's smooth GIFs get from Pillow), on premultiplied colour
+  function sinc(x) { if (x === 0) return 1; x *= Math.PI; return Math.sin(x) / x; }
+  var LZ = (function () { var w = [], s = 0; for (var k = 0; k < 12; k++) { var x = (k - 5.5) / 2, v = sinc(x) * sinc(x / 3); w.push(v); s += v; } return w.map(function (v) { return v / s; }); })();
+  function down2(raw, res, size) {
+    var tmp = new Float32Array(size * res * 4), out = new Uint8ClampedArray(size * size * 4), y, j, k, i, o, w, r, g, b, a;
+    for (y = 0; y < res; y++) for (j = 0; j < size; j++) {
+      r = g = b = a = 0;
+      for (k = 0; k < 12; k++) { i = 2 * j - 5 + k; i = i < 0 ? 0 : i >= res ? res - 1 : i; o = (y * res + i) * 4; w = LZ[k]; r += raw[o] * w; g += raw[o + 1] * w; b += raw[o + 2] * w; a += raw[o + 3] * w; }
+      o = (y * size + j) * 4; tmp[o] = r; tmp[o + 1] = g; tmp[o + 2] = b; tmp[o + 3] = a;
+    }
+    for (y = 0; y < size; y++) for (j = 0; j < size; j++) {   // output rows top down; GL rows run bottom up
+      r = g = b = a = 0;
+      for (k = 0; k < 12; k++) { i = 2 * y - 5 + k; i = i < 0 ? 0 : i >= res ? res - 1 : i; o = ((res - 1 - i) * size + j) * 4; w = LZ[k]; r += tmp[o] * w; g += tmp[o + 1] * w; b += tmp[o + 2] * w; a += tmp[o + 3] * w; }
+      a = Math.min(255, Math.max(0, a)); o = (y * size + j) * 4;
+      out[o] = Math.min(a, r); out[o + 1] = Math.min(a, g); out[o + 2] = Math.min(a, b); out[o + 3] = a;
+    }
+    return out;
+  }
+  function up2(raw, res, size) {   // the pixel GIFs: each render pixel doubled
+    var out = new Uint8ClampedArray(size * size * 4);
+    for (var y = 0; y < size; y++) { var row = (res - 1 - (y >> 1)) * res; for (var x = 0; x < size; x++) { var o = (row + (x >> 1)) * 4, p = (y * size + x) * 4; out[p] = raw[o]; out[p + 1] = raw[o + 1]; out[p + 2] = raw[o + 2]; out[p + 3] = raw[o + 3]; } }
+    return out;
+  }
+  function finish(raw, res, size, pixel, ground, softAlpha) {   // -> straight RGBA: on the ground, or cut at half alpha (GIF), or soft alpha (PNG)
+    var f = pixel ? up2(raw, res, size) : down2(raw, res, size);
+    for (var i = 0; i < f.length; i += 4) {
+      var a = f[i + 3];
+      if (ground) { var k = (255 - a) / 255; f[i] += ground[0] * k; f[i + 1] += ground[1] * k; f[i + 2] += ground[2] * k; f[i + 3] = 255; }
+      else if (a > 0 && (softAlpha || a >= 128)) { f[i] = f[i] * 255 / a; f[i + 1] = f[i + 1] * 255 / a; f[i + 2] = f[i + 2] * 255 / a; if (!softAlpha) f[i + 3] = 255; }
+      else if (!softAlpha) f[i + 3] = 0;
+    }
+    return f;
+  }
+  // GIF: one median-cut palette for every frame (255 colours + transparent, as make_gifs.py), no dither, LZW after omggif
+  function Bytes(cap) { this.a = new Uint8Array(cap); this.n = 0; }
+  Bytes.prototype.need = function (k) { if (this.n + k > this.a.length) { var b = new Uint8Array(Math.max(this.a.length * 2, this.n + k)); b.set(this.a.subarray(0, this.n)); this.a = b; } };
+  Bytes.prototype.byte = function (v) { if (this.n >= this.a.length) this.need(1); this.a[this.n++] = v; };
+  Bytes.prototype.u16 = function (v) { this.byte(v & 255); this.byte((v >> 8) & 255); };
+  Bytes.prototype.bytes = function (u) { this.need(u.length); this.a.set(u, this.n); this.n += u.length; };
+  Bytes.prototype.str = function (s) { for (var i = 0; i < s.length; i++) this.byte(s.charCodeAt(i)); };
+  Bytes.prototype.done = function () { return this.a.subarray(0, this.n); };
+  function quantize(frames, opaque) {
+    var N = 1 << 18, cnt = new Float64Array(N), sr = new Float64Array(N), sg = new Float64Array(N), sb = new Float64Array(N);   // 6-bit bins
+    frames.forEach(function (f) {
+      for (var i = 0; i < f.length; i += 4) {
+        if (!opaque && f[i + 3] < 128) continue;
+        var r = f[i], g = f[i + 1], b = f[i + 2], k = (r >> 2) << 12 | (g >> 2) << 6 | (b >> 2);
+        cnt[k]++; sr[k] += r; sg[k] += g; sb[k] += b;
+      }
+    });
+    var list = []; for (var k = 0; k < N; k++) if (cnt[k] > 0) list.push(k);
+    var keys = Int32Array.from(list), max = opaque ? 256 : 255;
+    function ch(k, a) { return a === 0 ? k >> 12 : a === 1 ? (k >> 6) & 63 : k & 63; }
+    function box(lo, hi) {
+      var mn = [63, 63, 63], mx = [0, 0, 0], n = 0, a, i;
+      for (i = lo; i < hi; i++) { var kk = keys[i]; n += cnt[kk]; for (a = 0; a < 3; a++) { var v = ch(kk, a); if (v < mn[a]) mn[a] = v; if (v > mx[a]) mx[a] = v; } }
+      var axis = 0, range = -1; for (a = 0; a < 3; a++) if (mx[a] - mn[a] > range) { range = mx[a] - mn[a]; axis = a; }
+      return { lo: lo, hi: hi, n: n, axis: axis, score: range > 0 ? n * range : -1 };
+    }
+    var boxes = keys.length ? [box(0, keys.length)] : [];
+    while (boxes.length < max) {
+      var bi = -1, best = 0; boxes.forEach(function (b, i) { if (b.score > best) { best = b.score; bi = i; } });
+      if (bi < 0) break;
+      var b = boxes[bi], t = new Float64Array(b.hi - b.lo), i;
+      for (i = b.lo; i < b.hi; i++) t[i - b.lo] = ch(keys[i], b.axis) * N + keys[i];
+      t.sort();
+      for (i = b.lo; i < b.hi; i++) keys[i] = t[i - b.lo] % N;
+      var acc = 0, s = b.lo; while (s < b.hi - 1) { acc += cnt[keys[s]]; s++; if (acc >= b.n / 2) break; }   // weighted median
+      boxes.splice(bi, 1, box(b.lo, s), box(s, b.hi));
+    }
+    var pal = new Uint8Array(768);
+    boxes.forEach(function (b, j) {
+      var n = 0, r = 0, g = 0, bl = 0;
+      for (var i = b.lo; i < b.hi; i++) { var kk = keys[i]; n += cnt[kk]; r += sr[kk]; g += sg[kk]; bl += sb[kk]; }
+      pal[j * 3] = Math.round(r / n); pal[j * 3 + 1] = Math.round(g / n); pal[j * 3 + 2] = Math.round(bl / n);
+    });
+    return { pal: pal, n: boxes.length, cnt: cnt, sr: sr, sg: sg, sb: sb };
+  }
+  function mapFrame(f, q, opaque, memo, idx) {
+    for (var i = 0, p = 0; p < idx.length; i += 4, p++) {
+      if (!opaque && f[i + 3] < 128) { idx[p] = 255; continue; }
+      var k = (f[i] >> 2) << 12 | (f[i + 1] >> 2) << 6 | (f[i + 2] >> 2), c = memo[k];
+      if (c < 0) {   // nearest palette colour to this bin's mean
+        var n = q.cnt[k], r = q.sr[k] / n, g = q.sg[k] / n, b = q.sb[k] / n, bd = Infinity;
+        for (var j = 0; j < q.n; j++) { var dr = q.pal[j * 3] - r, dg = q.pal[j * 3 + 1] - g, db = q.pal[j * 3 + 2] - b, d = dr * dr + dg * dg + db * db; if (d < bd) { bd = d; c = j; } }
+        memo[k] = c;
+      }
+      idx[p] = c;
+    }
+  }
+  function lzw(idx, out) {   // GIF LZW, 8-bit minimum code size, codes packed into 255-byte sub-blocks
+    var buf = new Bytes(idx.length + 16), cur = 0, shift = 0, size = 9, next = 258, table = new Map(), ib = idx[0];
+    function emit(c) { cur |= c << shift; shift += size; while (shift >= 8) { buf.byte(cur & 255); cur >>>= 8; shift -= 8; } }
+    emit(256);
+    for (var i = 1; i < idx.length; i++) {
+      var k = idx[i], key = ib << 8 | k, c = table.get(key);
+      if (c === undefined) {
+        emit(ib);
+        if (next === 4096) { emit(256); next = 258; size = 9; table.clear(); }
+        else { if (next >= 1 << size) size++; table.set(key, next++); }
+        ib = k;
+      } else ib = c;
+    }
+    emit(ib); emit(257);
+    if (shift > 0) buf.byte(cur & 255);
+    var d = buf.done();
+    for (var p = 0; p < d.length; p += 255) { var n = Math.min(255, d.length - p); out.byte(n); out.bytes(d.subarray(p, p + n)); }
+    out.byte(0);
+  }
+  async function encodeGif(frames, size, delayMs, opaque) {
+    var q = quantize(frames, opaque), out = new Bytes(1 << 20), memo = new Int16Array(1 << 18).fill(-1), idx = new Uint8Array(size * size);
+    out.str("GIF89a"); out.u16(size); out.u16(size); out.byte(0xF7); out.byte(0); out.byte(0); out.bytes(q.pal);   // 256-colour global table
+    out.byte(0x21); out.byte(0xFF); out.byte(11); out.str("NETSCAPE2.0"); out.byte(3); out.byte(1); out.u16(0); out.byte(0);   // loop forever
+    for (var i = 0; i < frames.length; i++) {
+      if (EX.cancel) throw CANCEL;
+      mapFrame(frames[i], q, opaque, memo, idx);
+      out.byte(0x21); out.byte(0xF9); out.byte(4); out.byte(2 << 2 | (opaque ? 0 : 1)); out.u16(Math.max(2, Math.round(delayMs / 10))); out.byte(opaque ? 0 : 255); out.byte(0);
+      out.byte(0x2C); out.u16(0); out.u16(0); out.u16(size); out.u16(size); out.byte(0);
+      out.byte(8); lzw(idx, out);
+      if (i % 4 === 3) await tick();
+    }
+    out.byte(0x3B);
+    return out.done();
+  }
+  // zip (stored: the GIFs are packed already)
+  var CRC_T = (function () { var t = new Uint32Array(256); for (var n = 0; n < 256; n++) { var c = n; for (var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+  function crc32(u) { var c = 0xFFFFFFFF; for (var i = 0; i < u.length; i++) c = CRC_T[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+  async function zipBlob(items) {
+    var parts = [], central = [], off = 0, now = new Date();
+    var time = now.getHours() << 11 | now.getMinutes() << 5 | now.getSeconds() >> 1, date = (now.getFullYear() - 1980) << 9 | (now.getMonth() + 1) << 5 | now.getDate();
+    for (var i = 0; i < items.length; i++) {
+      var data = new Uint8Array(await items[i].blob.arrayBuffer()), name = new TextEncoder().encode(items[i].name), crc = crc32(data);
+      var h = new DataView(new ArrayBuffer(30)), c = new DataView(new ArrayBuffer(46));
+      [[0, 0x04034b50, 4], [4, 20, 2], [6, 0, 2], [8, 0, 2], [10, time, 2], [12, date, 2], [14, crc, 4], [18, data.length, 4], [22, data.length, 4], [26, name.length, 2], [28, 0, 2]]
+        .forEach(function (f) { if (f[2] === 4) h.setUint32(f[0], f[1], true); else h.setUint16(f[0], f[1], true); });
+      [[0, 0x02014b50, 4], [4, 20, 2], [6, 20, 2], [8, 0, 2], [10, 0, 2], [12, time, 2], [14, date, 2], [16, crc, 4], [20, data.length, 4], [24, data.length, 4], [28, name.length, 2],
+       [30, 0, 2], [32, 0, 2], [34, 0, 2], [36, 0, 2], [38, 0, 4], [42, off, 4]]
+        .forEach(function (f) { if (f[2] === 4) c.setUint32(f[0], f[1], true); else c.setUint16(f[0], f[1], true); });
+      parts.push(h.buffer, name, data); central.push(c.buffer, name);
+      off += 30 + name.length + data.length;
+    }
+    var cd = central.reduce(function (s, b) { return s + b.byteLength; }, 0), e = new DataView(new ArrayBuffer(22));
+    e.setUint32(0, 0x06054b50, true); e.setUint16(8, items.length, true); e.setUint16(10, items.length, true); e.setUint32(12, cd, true); e.setUint32(16, off, true);
+    return new Blob(parts.concat(central, [e.buffer]), { type: "application/zip" });
+  }
+  function tick() { return new Promise(function (r) { setTimeout(r, 0); }); }
+  function busy(text, f) { $("busyText").textContent = text; $("busyBar").style.width = Math.round(Math.min(1, f) * 100) + "%"; }
+  function setBusy(on) {
+    EX.busy = on; EX.cancel = false; $("busy").hidden = !on; app.classList.toggle("exporting", on);
+    ["makeGif", "makePng", "makeAll", "startShow", "showBtn", "adjustBtn", "aboutBtn"].forEach(function (id) { $(id).disabled = on; });
+  }
+  function groundRGB() {   // null = transparent
+    var g = groundOf(); if (look.gground !== "ground" || !g[1]) return null;
+    var n = parseInt(g[1].slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255];
+  }
+  function insideSpec(m, fov) { var v = viewOf("inside", m); return { az: v[0], el: v[1], zoom: 1 / (v[2] || 1.15), target: new THREE.Vector3(), fov: fov }; }
+  async function loopFrames(m, base, explode, ground, label, f0, f1) {   // the Motion loop round base -> RGBA frames
+    var n = look.frames, size = look.size, pixel = look.style === "pixel", res = pixel ? size / 2 : size * 2;
+    var raw = new Uint8Array(res * res * 4), frames = [];
+    stageFor(m, pixel);
+    for (var i = 0; i < n; i++) {
+      if (EX.cancel) throw CANCEL;
+      var o = motionAt(look.motion, i / n, 1);
+      if (m.built.userData.setExplode) m.built.userData.setExplode(o[2] != null ? o[2] : explode);
+      shoot(m, { az: base.az + o[0], el: base.el + o[1], zoom: base.zoom, target: base.target, fov: base.fov }, res, pixel, raw);
+      frames.push(finish(raw, res, size, pixel, ground, false));
+      busy(label + " · frame " + (i + 1) + " / " + n, f0 + (f1 - f0) * 0.85 * (i + 1) / n);
+      await tick();
+    }
+    busy(label + " · encoding", f0 + (f1 - f0) * 0.9); await tick();
+    return encodeGif(frames, size, look.delay, !!ground);
+  }
+  async function runExport(kind) {   // "gif": this product · "png": this view, one frame · "all": the 8 as a zip
+    if (EX.busy || !current) return;
+    closeResult(); setBusy(true);
+    var ground = groundRGB(), live = liveSpec(), centre = live, items = [], zip = null, err = null;
+    if (play.on && !play.held) centre = { az: play.base.az, el: play.base.el, zoom: live.zoom, target: live.target, fov: live.fov };   // the loop's centre, not where it is now
+    var style = look.style, size = look.size, tag = look.motion === "sway" ? "" : "_" + look.motion;
+    try {
+      if (kind === "png") {
+        var pixel = style === "pixel", res = pixel ? size / 2 : size * 2, raw = new Uint8Array(res * res * 4);
+        busy(byId(current.id).short + " · rendering", 0.4); await tick();
+        stageFor(current, pixel); shoot(current, live, res, pixel, raw);
+        var f = finish(raw, res, size, pixel, ground, true), cv = document.createElement("canvas");
+        cv.width = cv.height = size; cv.getContext("2d").putImageData(new ImageData(f, size, size), 0, 0);
+        items.push({ id: current.id, name: current.id + "_" + style + "_" + size + ".png", blob: await new Promise(function (r) { cv.toBlob(r, "image/png"); }) });
+      } else {
+        var ids = kind === "all" ? LIST.map(function (p) { return p.id; }) : [current.id];
+        for (var i = 0; i < ids.length; i++) {
+          var p = byId(ids[i]), label = (ids.length > 1 ? (i + 1) + " / " + ids.length + " · " : "") + p.short;
+          busy(label + " · building", i / ids.length); await tick();
+          var m = await build(ids[i]), base = centre, explode = explodeVal;
+          if (kind === "all") { if (look.motion === "open" || insideOn) base = insideSpec(m, live.fov); explode = insideOn ? 1 : explodeVal; }
+          var bytes = await loopFrames(m, base, explode, ground, label, i / ids.length, (i + 1) / ids.length);
+          items.push({ id: ids[i], name: ids[i] + "_" + style + tag + ".gif", blob: new Blob([bytes], { type: "image/gif" }) });
+        }
+        if (kind === "all") { busy("Packing the zip", 1); await tick(); zip = { name: "sony80_" + style + tag + "_" + size + ".zip", blob: await zipBlob(items) }; }
+      }
+    } catch (e) { if (e !== CANCEL) err = e; }
+    unstage(); setBusy(false);
+    if (err) loadingEl.textContent = "Export failed: " + (err && err.message || err);
+    else if (items.length && (kind !== "all" || items.length === LIST.length)) showResult(kind, items, zip, ground);
+  }
+  $("makeGif").addEventListener("click", function () { runExport("gif"); });
+  $("makePng").addEventListener("click", function () { runExport("png"); });
+  $("makeAll").addEventListener("click", function () { runExport("all"); });
+  $("cancelBtn").addEventListener("click", function () { EX.cancel = true; busy("Stopping…", 1); });
+  // result card: the GIF(s) playing on their ground, with downloads
+  var result = $("result"), dlLink = $("dlLink"), urls = [];
+  function kb(n) { return n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.round(n / 1024) + " KB"; }
+  function showResult(kind, items, zip, ground) {
+    var media = $("resultMedia"), many = items.length > 1;
+    media.innerHTML = ""; media.className = "result-media " + (many ? "grid" : "one") + (ground ? "" : " clear") + (look.style === "pixel" ? " pixel" : "");
+    media.style.setProperty("--rg", ground ? "rgb(" + ground.join(",") + ")" : "#FFFFFF");
+    items.forEach(function (it) {
+      var url = URL.createObjectURL(it.blob); urls.push(url); it.url = url;
+      var a = document.createElement("a"); a.href = url; a.download = it.name; a.title = "Download " + it.name;
+      var im = document.createElement("img"); im.src = url; im.alt = byId(it.id).name + (kind === "png" ? ", still" : ", animated GIF"); a.appendChild(im);
+      if (many) { var s = document.createElement("span"); s.textContent = byId(it.id).short; a.appendChild(s); }
+      media.appendChild(a);
+    });
+    var total = items.reduce(function (s, it) { return s + it.blob.size; }, 0), sz = look.size + " × " + look.size, loop = look.frames + " frames × " + look.delay + " ms";
+    $("resultTitle").textContent = kind === "png" ? "PNG ready" : many ? "8 GIFs ready" : "GIF ready";
+    $("resultInfo").textContent = kind === "png" ? items[0].name + " · " + sz + " · " + kb(total)
+      : many ? sz + " each · " + loop + " · " + kb(total) + " in all · click one to save it alone"
+      : items[0].name + " · " + sz + " · " + loop + " · " + kb(total);
+    var dl = zip ? zip : items[0];
+    if (zip) { zip.url = URL.createObjectURL(zip.blob); urls.push(zip.url); }
+    dlLink.href = dl.url; dlLink.download = dl.name; dlLink.textContent = zip ? "Download .zip (" + kb(zip.blob.size) + ")" : "Download";
+    result.hidden = false; dlLink.focus();
+  }
+  function closeResult() {
+    if (result.hidden) return;
+    result.hidden = true; $("resultMedia").innerHTML = ""; urls.forEach(function (u) { URL.revokeObjectURL(u); }); urls = []; canvas.focus();
+  }
+  $("closeResult").addEventListener("click", closeResult);
+  // About: what this is, who made it, credits
+  var about = $("about"), aboutBtn = $("aboutBtn");
+  function openAbout() { if (sc.on || EX.busy) return; closeResult(); about.hidden = false; about.scrollTop = 0; about.focus({ preventScroll: true }); }   // from the top, also on a phone
+  function closeAbout() { if (about.hidden) return; about.hidden = true; aboutBtn.focus(); }
+  aboutBtn.addEventListener("click", function () { if (about.hidden) openAbout(); else closeAbout(); });
+  $("closeAbout").addEventListener("click", closeAbout);
+
+  // ---------- 3D / GIF: the GIF mode shows the product's GIF from the set (output/gifs/), on the stage ground ----------
+  var GIF_BASE = "./gifs/";   // from output/; the site's index.html at the repo root gets "./output/gifs/"
+  var gifview = $("gifview"), gifImg = $("gifImg"), gifDl = $("gifDl");
+  function showGif() {
+    if (look.mode !== "gif" || !want) return;
+    var p = byId(want), name = want + "_" + look.gifStyle + ".gif";
+    gifImg.src = GIF_BASE + name; gifImg.alt = p.name + ", " + look.gifStyle + " GIF";
+    gifDl.href = GIF_BASE + name; gifDl.setAttribute("download", name);
+    gifview.classList.toggle("pixel", look.gifStyle === "pixel");
+    $("gifPixel").setAttribute("aria-pressed", String(look.gifStyle === "pixel")); $("gifSmooth").setAttribute("aria-pressed", String(look.gifStyle === "smooth"));
+  }
+  function setMode(m) {
+    look.mode = m; saveLook();
+    var gif = m === "gif";
+    app.classList.toggle("gifmode", gif); gifview.hidden = !gif; $("gifDock").hidden = !gif;
+    document.querySelectorAll("[data-3d]").forEach(function (g) { g.classList.toggle("off", gif); });
+    $("mode3d").setAttribute("aria-pressed", String(!gif)); $("modeGif").setAttribute("aria-pressed", String(gif));
+    if (gif) { stopPlay(); if (state.rotate) setRotate(false); showGif(); }
+    else if (sc.on) startPlay();
+    updateGuide();
+  }
+  $("mode3d").addEventListener("click", function () { setMode("3d"); });
+  $("modeGif").addEventListener("click", function () { setMode("gif"); });
+  $("gifPixel").addEventListener("click", function () { look.gifStyle = "pixel"; saveLook(); showGif(); });
+  $("gifSmooth").addEventListener("click", function () { look.gifStyle = "smooth"; saveLook(); showGif(); });
+
+  setTab(look.tab); loopText();
+  applyLight(); applyBg(); controls.autoRotateSpeed = look.spin;
+  function draw() {
+    if (!state.edges || !current || !current.ink) { renderer.setRenderTarget(null); renderer.render(scene, camera); return; }
+    inkMat.uniforms.enabled.value = current.ink;
+    var z = fitDist() / camDist();   // the pixel look keeps its fixed pixels (it is drawn at 1/4 size and blown up)
+    inkMat.uniforms.width.value = inkFit(state.pixel ? Math.min(1, z) : z, buf.x, buf.y, lineBase, [rtNormal, rtMask, rtClean], [inkMat, cleanMat, compMat], compMat);
+    renderer.setRenderTarget(rtColor); renderer.clear(); renderer.render(scene, camera);
+    hideFor(current.skip, function () { scene.overrideMaterial = normalMat; renderer.setRenderTarget(rtNormal); renderer.clear(); renderer.render(scene, camera); scene.overrideMaterial = null; });
+    renderer.setRenderTarget(rtMask); renderer.clear(); renderer.render(quadScene, quadCam);
+    renderer.setRenderTarget(rtClean); renderer.clear(); renderer.render(cleanScene, quadCam);
+    renderer.setRenderTarget(null); renderer.render(compScene, quadCam);
+  }
+
+  makeColorTarget();
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(stage); else window.addEventListener("resize", resize);
+  resize();
+  goTo("hero");
+  show((location.hash || "").slice(1));
+  setMode(look.mode);
+
+  var last = 0, prevNow = 0;
+  function frame(now) {
+    requestAnimationFrame(frame);
+    var dt = prevNow ? Math.min(250, now - prevNow) : 0; prevNow = now;
+    if (EX.busy) return;   // the export has the scene; the canvas keeps its last picture
+    if (look.mode === "gif") {   // the GIF plays by itself: only the showcase clock runs, and nothing is drawn
+      if (sc.on && look.every && !sc.fading) { sc.slot += dt; progressBar.style.width = Math.min(100, sc.slot / (look.every * 10)) + "%"; if (sc.slot >= look.every * 1000) advance(1); }
+      return;
+    }
+    if (explodeTween) { var e = Math.min(1, (now - explodeTween.t0) / explodeTween.dur), k = e < 0.5 ? 4 * e * e * e : 1 - Math.pow(-2 * e + 2, 3) / 2; setExplode(explodeTween.from + (explodeTween.to - explodeTween.from) * k); if (e >= 1) explodeTween = null; }
+    if (play.on) {
+      if (play.held && play.releaseAt && now >= play.releaseAt) {   // handled and let go: the loop carries on round the new view
+        var s = liveSpec(), o = motionAt(look.motion, play.phase, play.amp); play.base = { az: s.az - o[0], el: s.el - o[1] }; play.held = false; play.releaseAt = 0;
+      }
+      play.wrapped = false;
+      if (!play.held) { var ph = play.phase + dt / period(); play.wrapped = ph >= 1; play.phase = ph % 1; play.amp = Math.min(1, play.amp + dt / 700); }
+    }
+    controls.update();
+    if (play.on && !play.held) applyPlay();
+    if (sc.on && look.every && !sc.fading) {
+      sc.slot += dt; progressBar.style.width = Math.min(100, sc.slot / (look.every * 10)) + "%";
+      if (sc.slot >= look.every * 1000 && (play.wrapped || !play.on)) advance(1);   // at the end of a loop
+    }
+    // near / far round the model (it sits at the origin, opened parts within ~3 units), so a narrow lens far away keeps
+    // its depth precision for the ink pass and the decals a few hundredths of a mm off their faces
+    var d0 = camera.position.length(), nr = Math.max(0.02, (d0 - 3) * 0.9), fr = d0 + 4;
+    if (Math.abs(nr - camera.near) > 1e-4 || Math.abs(fr - camera.far) > 1e-4) {
+      camera.near = nr; camera.far = fr; camera.updateProjectionMatrix(); inkMat.uniforms.near.value = nr; inkMat.uniforms.far.value = fr;
+    }
+    draw();
+    if (now - last > 120) {
+      last = now;
+      var az = Math.round(controls.getAzimuthalAngle() * 180 / Math.PI), el = Math.round(90 - controls.getPolarAngle() * 180 / Math.PI);
+      readout.textContent = "az " + az + "° · el " + el + "° · lens " + Math.round(camera.fov) + "° · " + (fitDist() / camDist()).toFixed(2) + "×";
+      zoomSlider.sync();
+    }
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
