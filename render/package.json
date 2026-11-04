@@ -1,5 +1,5 @@
 {
-  "name": "sony-chf90-3d",
+  "name": "sony80-3d",
   "version": "1.0.0",
   "scripts": {
     "viewer": "python build_viewer.py",
@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "",
   "license": "UNLICENSED",
-  "description": "Render pipeline + viewer bundler for the Sony CHF 90 cassette 3D model",
+  "description": "Render pipeline and viewer bundler for the Sony 80th 3D Collection",
   "dependencies": {
     "three": "^0.170.0"
   },
