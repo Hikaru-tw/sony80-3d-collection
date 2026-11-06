@@ -515,6 +515,19 @@ Per product (evidence in brackets; `reference image/real-product/` unless noted)
   is not a verified circuit. The paper's tears and stains and a collector's marker note are left out. The label stays
   turned so it reads from behind with the cover folded down. Taken off and turned over, as photographed, the real one
   has its Sony box beside the socket opening.
+- D-E350 headphones, from Sony's photo of the player with them (`reference image/products/d-e350.jpg`) and the sticker.
+  The pads were flat 44 x 13 mm cylinders facing straight out, each with a thin black disc on its back, hung on a wire
+  arm off the band; seen from the front they were narrow pills. Each pad is now a foam doughnut (a lathe, 46 x 15 mm,
+  rounded over the whole rim, ear face domed 0.8 mm), closed on the ear side and open at the back (19 mm), where the
+  driver's black back shows. A yoke block (8 x 16 x 8.5 mm) stands on the driver back. Its pivot screw faces the front:
+  it is the white ring the sticker draws by each pad. The hanger runs from the band's arc at 150 degrees down outside the
+  pad onto the block, and the band runs on its outer face, 0.7 mm proud: the sticker's lighter stripe down each slider.
+  The pads are centred 48 mm below the lid's centre, as drawn, and turned 12 degrees towards the viewer. That shows the
+  sticker's light back with the darker ear half as a crescent towards the player (the two oranges sampled from it).
+  Clearances, measured on the geometry: the pads' surfaces stay >= 1 mm off the player's solids (ray-parity test of
+  every lathe vertex pushed out 1 mm along its normal), and no hanger, band or block vertex is inside a pad. The yokes
+  reach +-89.7 mm (the sticker's outline: +-87.6), which grew the bounding sphere from 119 to 125 mm. `fit: 1.05` keeps
+  the player at its earlier size in the GIFs. Not modelled: the cords (the sticker has none).
 
 Judgement calls: the KV-1310's case is 451 x 329 mm: the width is Sony's (US brochure for the KV-1210U twin,
 Smithsonian), the height comes from Sony's photo rectified onto that width (knobs and dial come out round), which also

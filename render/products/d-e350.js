@@ -8,6 +8,8 @@
 //   operating instructions, "Connect" and "Play" drawings); lid hinged at the far edge, its underside ribbed round a hub
 //   over the spindle with the window's frame and the latch hook (radiomuseum's open-lid photo of a D-E350)
 //   back: battery door on the right (two AA side by side), oval rating label, two rubber feet and a screw
+// Headphones from Sony's photo of the player with them (reference image/products/d-e350.jpg): steel band on grey hangers,
+// a yoke block with a pivot screw on each driver's back, thick orange foam doughnuts open at the back (notes by the code).
 // Inside, from the D-E350/E351/E351SR/E353/E355/E356CK service manual (2002) and iFixit's D-E356CK teardown: deck plate
 // with the turntable at the lid centre and the pickup slot running to the upper left; the CDM-3125ER mechanism under it
 // (black chassis on three rubber mounts, pickup on its shaft and feed screw, sled motor and gear cover underneath, the
@@ -17,6 +19,7 @@
 // setExplode(t): lid swings up and the CD lifts off (t 0-0.5), then the back comes away.
 export default {
   id: 'd-e350', name: 'Sony CD Walkman D-E350', textures: ['tex/d-e350', 'tex/d-e350_board'], ink: 1.5,
+  fit: 1.05,   // the headphones' yokes reach +-89.7 mm (the sticker's +-87.6) and grew the bounding sphere 119 -> 125 mm: keep the player's size
   openLabel: 'Open up', insideView: [-20, -36, 1.3],    // viewer: [azimuth, elevation, distance x fit]
   build(THREE, K, T, P) {
     const g = new THREE.Group(), RL = 65.4, ZT = 13.15, ZB = -13.15, ZC = 9;   // lid radius; top, back; body top
@@ -346,18 +349,50 @@ export default {
     }
     inner.add(K.edges(K.box(24, 0.3, 8, 40.3, 31.35, -4.3, steel)));                              // link contact at the back
 
-    // headphones: band arching over the player, sliders, black drivers with orange foam pads
+    // headphones, from Sony's photo of the player with them (reference image/products/d-e350.jpg) and the sticker. The
+    // steel band arches over the top and runs down the outer face of a hanger on each side to a yoke block on the back of
+    // the driver. The block's pivot screw faces the front: it is the white ring the sticker draws beside each pad. The
+    // driver sits in a thick orange foam doughnut, rounded over its rim, closed on the ear side and open at the back,
+    // where the driver's black back shows. Read off the photo against the player: pad about 46 x 15 mm, the opening ~0.4
+    // of its width, the block ~7 x 14 mm. On the sticker the pads are 45 mm tall, centred 48 mm below the lid's centre,
+    // and turned so their backs face the viewer: a light orange back with the darker ear side as a crescent towards the
+    // player. Here they are turned 12 degrees towards the viewer, which shows that, and their ear faces clear the
+    // player's sides. (They were 13 mm flat cylinders facing straight out, on a thin wire arm from the band.)
     const hp = new THREE.Group(); hp.position.z = -2; g.add(hp);
-    const bandM = K.mat(0xe4e6e7), slider = K.mat(0x8a8e92), pad = K.mat(0xf5a100), padIn = K.mat(0xd97d0b);
-    const BR = M.sx(600);
-    hp.add(K.strip(K.arc(0, 0, BR, 200, -20, 64), 2.2, 6, bandM, { segs: 160 }));   // 6 mm wide front to back, 2.2 thick (flat curve: t is the z extent)
+    const bandM = K.mat(0xe4e6e7), slider = K.mat(0x8a8e92), pad = K.mat(0xf5a100), padIn = K.mat(0xd66910);   // the sticker's two oranges
+    const BR = M.sx(600), PR = 23, PT = 15, PH = 9.5, RC = 8, YC = -48, CX = 76, TILT = 12 * Math.PI / 180;   // band radius; pad radius, thickness, opening; rim rounding; pad centre
+    const zD = PT / 2 - 2.8, BW = 8, BH = 16, BD = 8.5;   // driver back (pad axis, + towards the back); yoke block across, tall, deep
+    // pad cross-section (r, z): ear face domed 0.8 mm, rim a superellipse quarter each side of the equator, flat back,
+    // rounded lip down into the opening. Ear half in the darker orange
+    const rimPt = a => { const c = Math.cos(a), sn = Math.sin(a), e = 2 / 2.3; return [PR - RC + RC * Math.abs(c) ** e, PT / 2 * Math.sign(sn) * Math.abs(sn) ** e]; };
+    const earHalf = [...Array.from({ length: 9 }, (_, i) => { const r = (PR - RC) * i / 8; return [r, -PT / 2 - 0.8 * (1 - (r / (PR - RC)) ** 2)]; }),
+      ...Array.from({ length: 12 }, (_, i) => rimPt(-Math.PI / 2 + Math.PI / 2 * (i + 1) / 12))];
+    const backHalf = [...Array.from({ length: 13 }, (_, i) => rimPt(Math.PI / 2 * i / 12)),
+      ...Array.from({ length: 7 }, (_, i) => { const a = Math.PI / 2 * i / 6, L = 2.2; return [PH + L - L * Math.sin(a), PT / 2 - L + L * Math.cos(a)]; }), [PH, zD - 1.7]];
+    const hangers = [];
     for (const s of [-1, 1]) {
-      hp.add(K.strip(K.arc(0, 0, BR - 1, s < 0 ? 196 : -16, s < 0 ? 155 : 25, 12), 4, 7.5, slider, { segs: 32 }));
-      const [px, py] = M.mm(s < 0 ? 168 : 1308, 1040), yTop = BR * Math.sin(-20 * Math.PI / 180), xArm = s * BR * Math.cos(20 * Math.PI / 180);
-      hp.add(K.tube([[xArm, yTop, 0], [xArm + s * 2, (yTop + py) / 2, 0], [px + s * 2, py + 12, 0]], 2.4, slider, { segs: 16 }));   // arm down to the driver
-      hp.add(K.cylX(py, 0, Math.min(px, px + s * 5), Math.max(px, px + s * 5), 15, { side: dark, bevel: 1.5, rim: 'both' }));
-      hp.add(K.cylX(py, 0, Math.min(px, px - s * 13), Math.max(px, px - s * 13), 22, { side: pad, front: s < 0 ? padIn : pad, back: s < 0 ? pad : padIn, bevel: 4, rim: s < 0 ? 'front' : 'back' }));
+      const cup = new THREE.Group(); cup.position.set(s * CX, YC, 0); cup.rotation.y = s * (Math.PI / 2 - TILT); hp.add(cup);   // pad axis: out from the player, 12 deg forward
+      cup.add(K.lathe(earHalf, padIn, 64), K.lathe(backHalf, pad, 64));
+      cup.add(K.cylZ(0, 0, zD - 2.2, zD, PH + 0.4, { side: dark }));                                   // driver back, in the opening
+      cup.add(K.edges(K.box(BW, BH, BD, 0, -1, zD + BD / 2, slider)));                                  // yoke block
+      const xf = -s * BW / 2;   // the block's face towards the viewer: pivot washer and screw
+      cup.add(K.cylX(-1, zD + BD / 2, Math.min(xf, xf - s * 0.7), Math.max(xf, xf - s * 0.7), 2.4, { side: bandM, rim: 'both' }));
+      cup.add(K.cylX(-1, zD + BD / 2, Math.min(xf, xf - s * 1.1), Math.max(xf, xf - s * 1.1), 1.1, { side: dark }));
+      // hanger: along the band's arc from 150 degrees, then down outside the pad onto the outer part of the block's top
+      // (it stands 6 mm proud of the foam), arriving vertical and clear of the foam
+      cup.updateMatrix();
+      const top = new THREE.Vector3(0, -1 + BH / 2, zD + BD - 2.2).applyMatrix4(cup.matrix);
+      const hang = [...K.arc(0, 0, BR - 1.6, 150, 176, 8).map(([x, y]) => [-s * x, y, 0]), [s * 81.6, -10, 0], [top.x, top.y + 8, 0], [top.x, top.y, 0]];
+      hp.add(K.strip(hang, 4, 7.5, slider, { segs: 64 }));
+      hangers.push(hang);
     }
+    // band: its 2.2 mm runs on the hangers' outer faces (0.7 mm proud, the lighter stripe down each slider on the sticker)
+    // and over the top at BR
+    const outer = (pts, s) => {
+      const c = new THREE.CatmullRomCurve3(pts.map(p => new THREE.Vector3(...p)));
+      return Array.from({ length: 61 }, (_, i) => { const u = i / 60, p = c.getPointAt(u), t = c.getTangentAt(u); let n = [t.y, -t.x]; if (Math.sign(n[0]) !== s) n = [-n[0], -n[1]]; return [p.x + 1.6 * n[0], p.y + 1.6 * n[1], 0]; });
+    };
+    hp.add(K.strip([...outer(hangers[0], -1).reverse(), ...K.arc(0, 0, BR, 150, 30, 48).slice(1, -1), ...outer(hangers[1], 1)], 2.2, 6, bandM, { segs: 320 }));   // 6 mm wide front to back
     const hpOn = !(P.q && P.q.get('hp') === '0');
 
     const sm = x => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
